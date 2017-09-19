@@ -1,0 +1,11 @@
+@import url('../../node_modules/bootstrap/dist/css/bootstrap.css');
+
+:root {
+    --main-bg-color: rgb(26,15,36);
+    --main-fg-color: rgb(234,230,217);
+  }
+
+body{
+    background-color: var(--main-bg-color);
+    color: var(--main-fg-color);
+}

@@ -1,0 +1,31 @@
+{
+  "name": "ultraviolent_junglist",
+  "version": "1.0.0",
+  "description": "Ultraviolent Junglist",
+  "main": "app/index.js",
+  "dependencies": {
+    "tone": "^0.10.0",
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "electron": "^1.7.6",
+    "electron-packager": "^9.0.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "reactify": "^1.1.1",
+    "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-concat-css": "^2.3.0",
+    "gulp-react": "^3.1.0",
+    "gulp-run": "^1.7.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "Timmy Kokke (Sorskoot)",
+  "license": "Apache 2"
+}
