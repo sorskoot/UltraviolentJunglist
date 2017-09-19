@@ -1,8 +1,6 @@
-const React = require('react'),
-    ReactDOM = require('react-dom'),
-    Greeting = require('./greeting'),
-    $ = jQuery = require('jquery'),
-    bootstrap = require('bootstrap');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Greeting from './greeting';
 
 class MainInterface extends React.Component {
     constructor(props) {
