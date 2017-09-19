@@ -13,7 +13,7 @@ module.exports = {
         loaders: [
             //{ test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
             {
-                test: /.jsx?$/,
+                test: /\.jsx?$/,
                 loader: 'babel-loader?stage=0',
                 exclude: /node_modules/,
                 query: {

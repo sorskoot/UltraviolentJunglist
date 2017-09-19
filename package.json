@@ -33,7 +33,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron app/index.js",
-    "build": "webpack"
+    "build": "webpack",
+    "watch": "webpack -w"
   },
   "keywords": [],
   "author": "Timmy Kokke (Sorskoot)",

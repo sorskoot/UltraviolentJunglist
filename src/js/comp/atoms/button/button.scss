@@ -1,0 +1,8 @@
+.button{
+    background-color:red;
+    transition:.5s;
+    &:hover{
+        background-color: lightcoral;
+        cursor: pointer;
+    }
+}
