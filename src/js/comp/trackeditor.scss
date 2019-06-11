@@ -1,0 +1,9 @@
+.trackDesigner-element li {
+    display: inline;
+    padding: 0 15px;
+    border: 2px solid #111;
+    background-color: #333;
+    &.highlight{
+        border-bottom: 5px solid #F51;
+    }
+}
