@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400|Rubik:500,500i,700');
+
+$header-font-family : 'Rubik', sans-serif;
+$text-font-family: 'Montserrat', sans-serif;
+
+$dark: #2B2B2B;
+$dark-grey: #3A3A3A;
+$light-grey:#7E7E7E;
+$light: #ffffff;
+
+$accent: #FF7E4A;
+$accent-lighter: lighten( $accent, 10% );
+$accent-darker: darken( $accent, 10% );
+$accent-disabled: darken(desaturate( $accent, 50% ), 20%);
+
+$danger: #FF4A4A;
+$danger-lighter: lighten( $danger, 10% );
+$danger-darker: darken( $danger, 10% );
+$danger-disabled: darken(desaturate( $danger, 25% ), 20%);
+
+$success: #27CC54;
+$success-lighter: lighten( $success, 10% );
+$success-darker: darken( $success, 10% );
+$success-disabled: darken(desaturate( $success, 25% ), 20%);
+
+h1 {
+    font-family: $header-font-family;
+    font-size: 48px;
+    font-weight: 700;
+    color: $light-grey;
+    
+}
+
+%text {
+    font-family: $text-font-family;
+    font-size: 1em;
+    font-weight: 300;
+}
+
+$magic-number: 6px;
+$margin-s: $magic-number;
+$margin-m: $magic-number * 2;
+$margin-l: $magic-number * 4;
+
+$button-s: $magic-number * 10;
+$button-m: $magic-number * 20;
+$button-l: $magic-number * 40;
+
+$width-xs: $magic-number * 25;
+$width-s: $magic-number * 50;
+$width-m: $magic-number * 75;
+$width-l: $magic-number * 100;
+
+$ease-speed: 75ms;
+$ease-curve: cubic-bezier(1.000, 0.000, 1.000, 1.000);
+$ease: all $ease-speed $ease-curve;
+$ease-color: color $ease-speed $ease-curve;
