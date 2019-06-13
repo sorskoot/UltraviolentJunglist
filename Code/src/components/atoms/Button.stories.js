@@ -6,7 +6,6 @@ import ujButton from './Button';
 
 storiesOf('2.Atoms|uj-button', module)
   .addDecorator(withNotes)
-  
   .add('outline', () => ({
     components: { ujButton },
     render(h) { return<uj-button>Outline Button</uj-button> },

@@ -1,18 +1,26 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+      <button v-on:click="load()">Load</button>
+      <button v-on:click="trigger()">Trigger</button>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
-
+import ujButton from '../components/atoms/Button';
+import sampleLoader from '../lib/sample-loader';
 export default {
   name: 'home',
   components: {
-    HelloWorld,
+    ujButton,
   },
+  methods:{
+      load:()=>{
+        sampleLoader.load();
+      },
+       trigger:()=>{
+        sampleLoader.trigger();
+      }
+  }
 };
 </script>

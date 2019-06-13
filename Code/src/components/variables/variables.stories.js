@@ -4,12 +4,14 @@ import { withNotes } from '@storybook/addon-notes';
 
 import ujButton from '../atoms/Button';
 
-storiesOf('1.Variables|uj-button', module)
+storiesOf('1.Variables|variables', module)
     .addDecorator(withNotes)
-    .addParameters({ options: { panelPosition: 'top' } })
+    .addParameters({ options: { panelPosition: 'bottom' } })
     .add('outline', () => ({
         components: { ujButton },
-        render(h) { return <uj-button>Outline Button</uj-button> },
+        render(h) { return <div>
+            <h1>H1</h1>
+        </div> },
         methods: { action: action('clicked') },
     }),{notes: 'example notes on a button' }
     );
