@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-      <button v-on:click="load()">Load</button>
-      <button v-on:click="trigger()">Trigger</button>
+      <uj-button v-on:click="load()">Load</uj-button>
+      <uj-button v-on:click="trigger()">Trigger</uj-button>
   </div>
 </template>
 

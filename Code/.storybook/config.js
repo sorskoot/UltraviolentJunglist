@@ -1,6 +1,7 @@
 import { configure, addDecorator, addParameters } from '@storybook/vue';
 import { withBackgrounds } from '@storybook/addon-backgrounds';
-import { themes } from '@storybook/theming';
+
+import myTheme from './myTheme';
 import './style.css';
 import Vue from 'vue';
 
@@ -13,14 +14,12 @@ function loadStories() {
 }
 addParameters({
     options: {
-        theme: themes.dark,
+        theme: myTheme,
     },
 });
 
 addDecorator(withBackgrounds([
-    { name: 'dark', value: '#2B2B2B', default: true },
-    { name: 'darkgrey', value: '#4A4A4A' },
-    { name: 'light', value: '#FFFFFF' }
+    { name: 'dark', value: '#1a0f24', default: true }
 ]));
 
 configure(loadStories, module);

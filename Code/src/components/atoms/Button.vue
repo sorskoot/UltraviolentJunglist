@@ -1,8 +1,11 @@
 <template>
-    <button class="button" :disabled="isButtonDisabled" :title="this.title"><slot></slot></button>
+  <button class="button" v-on:click="$emit('click')" :disabled="isButtonDisabled" :title="this.title">
+    <slot></slot>
+  </button>
 </template>
 
 <script>
+
 export default {
   name: "uj-button",
   props: {
@@ -25,11 +28,11 @@ export default {
   @extend %text;
   color: $light;
   transition: $ease;
-  &:focus{
+  &:focus {
     border: 2px solid $accent;
   }
   &:disabled,
-  &[disabled]{
+  &[disabled] {
     background-color: $dark;
     color: $dark-grey;
   }
@@ -50,7 +53,6 @@ export default {
     }
   }
 
-  
   &.button-success {
     background-color: $success;
     &:hover:enabled {
@@ -63,7 +65,6 @@ export default {
     }
   }
 
-  
   &.button-danger {
     background-color: $danger;
     &:hover:enabled {

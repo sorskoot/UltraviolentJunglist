@@ -8,7 +8,7 @@ storiesOf('2.Atoms|uj-button', module)
   .addDecorator(withNotes)
   .add('outline', () => ({
     components: { ujButton },
-    render(h) { return<uj-button>Outline Button</uj-button> },
+    render(h) { return<uj-button >Outline Button</uj-button> },
     methods: { action: action('clicked') },
   }),
   {notes: 'example notes on a button' })

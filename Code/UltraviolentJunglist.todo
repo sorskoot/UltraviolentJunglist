@@ -5,18 +5,58 @@ Generate music with semi-random controls
 
 Todo:
     Style:
-        ☐ Getting started on a style
-
+        ✔ Getting started on a style @done(19-06-14 00:20)
+   
+    Overall:
+        ~ Export a song to a Wav or MP3
+        ~ Random can be totally random or with a specific seed
+        ~ MIDI support
+        ~ Live performance mode
+        ~ Create A design in Adobe XD
+        
     Song Editor:
+        ~ Contains information about an entire song. Like the name.
         
         Pattern Editor:
+        ~ just a list of patterns that make up the song
+        ~ can set the energy level per pattern
 
         Track Editor:
+        ~ The track editor contains at least 1 bar of buttons that represent parts of the measure.
+        ~ By default it contains 16 segments where every segment is a 16th note.
+        ~ Each track can be configured so that the track contains 16 8th notes, etc. You can change the speed.
+        ~ The number of segments on the track should be configurable.
+        ~ Each sample in the track will new bar of buttons.
+        ~ Track bars are collapsed except for the current selected one.
+        ~ only the selected Track Bar is editable.
+        ~ The combination of Tracks becomes a pattern
+        ~ You should be able to copy a track bar from one pattern to another.
+
             ☐ Edit a track
+            Track Bar:
+
+                Track Bar Button:
+                ~ we need a name for this
+                ~ change 'color' by dragging up or down
+
         Sample Editor:
+            ~ Sample can be devided into X number of segments by default
+            ~ The length of a segment can be changed.
+            ~ One hit samples
+            ~ calculate properties of the samples/segments like 'energy'
             ✔ Load a sample @done(19-06-13 23:23)
 
             Segment Editor:
+            ~ Segments can be multiple segments long
+
             FX Editor:
+            ~ All the regular filters (LP, HP, etc)
+            ~ Sweepable. Start to finish
+            ~ Glitch effect
+            ~ Bit depth
+            ~ Distortion
+            ~ Reverb
+            ~ Echo
+
 
 Archive:
