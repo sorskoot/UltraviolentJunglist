@@ -8,11 +8,15 @@ let buffers = [];
 let player;
 
 export default {
-    load: function () {
-        let s = new Sample("Ruffa", '/samples/Ruffa Break 170.wav');
-        player = new Tone.Player().toMaster();
-        player._buffer = s._buffer;
+    load: function (filename) {
+        let s = new Sample("Ruffa");
+        return s.load(filename || availableSamples[1]).then((sample=>{
+            player = new Tone.Player().toMaster();
+            player._buffer = sample._buffer;
+            return player;
+        }))
     },
+
     trigger:function(){
         player.start();
     }

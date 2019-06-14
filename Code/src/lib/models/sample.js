@@ -1,18 +1,30 @@
 import Tone from 'tone';
 
-export class Sample{
-    
+export class Sample {
+
     _buffer;
     _isLoaded = false;
 
-    get isLoaded(){
+    get isLoaded() {
         return this._isLoaded;
     }
 
-    constructor(name, filename){
+    constructor(name) {
         this.name = name;
-        this._buffer = new Tone.Buffer(filename);
-        
+    }
+
+    load(filename) {
+        return new Promise((res, rej) => {
+            try {
+                let buffer = new Tone.Buffer(filename, () => {
+                    this._buffer = buffer;
+                    res(this);
+                })
+            } catch (e) {
+                rej(e);
+            }
+        })
+
     }
 
 }

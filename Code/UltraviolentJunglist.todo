@@ -5,7 +5,6 @@ Generate music with semi-random controls
 
 Todo:
     Style:
-        ✔ Getting started on a style @done(19-06-14 00:20)
    
     Overall:
         ~ Export a song to a Wav or MP3
@@ -13,13 +12,24 @@ Todo:
         ~ MIDI support
         ~ Live performance mode
         ~ Create A design in Adobe XD
-        
+        ~ Needs a real name
+        ~ needs a logo
+        ☐ Come up with an object model
+
+    Transport control:
+        ~ Start/Stop plying song/pattern
+        ~ Set the temp
+        ~ Set the measure (4/4, 7/8, 13/16)
+
+
     Song Editor:
         ~ Contains information about an entire song. Like the name.
-        
+        ~ Optionally a Seed to use in the entire song
+
         Pattern Editor:
         ~ just a list of patterns that make up the song
         ~ can set the energy level per pattern
+        ~ optional seed per pattern
 
         Track Editor:
         ~ The track editor contains at least 1 bar of buttons that represent parts of the measure.
@@ -31,12 +41,15 @@ Todo:
         ~ only the selected Track Bar is editable.
         ~ The combination of Tracks becomes a pattern
         ~ You should be able to copy a track bar from one pattern to another.
+        ~ Select how many bars or blocks a track is.
+        ~ optional seed per track
 
             ☐ Edit a track
             Track Bar:
+                ☐ Create the trackbar
 
                 Track Bar Button:
-                ~ we need a name for this
+                ~ we need a name for this. blocks?
                 ~ change 'color' by dragging up or down
 
         Sample Editor:
@@ -44,10 +57,23 @@ Todo:
             ~ The length of a segment can be changed.
             ~ One hit samples
             ~ calculate properties of the samples/segments like 'energy'
-            ✔ Load a sample @done(19-06-13 23:23)
-
+            
             Segment Editor:
             ~ Segments can be multiple segments long
+                Waveform Editor:
+                    ~ complete custom control
+                    ~ a canvas that shows the waveform of the selected sample
+                    ~ select segments in on the waveform. 
+                    ~ drag to move them, start position changes, but length stays the same
+                    ~ drag the end of the segment to make it longer or shorter.
+                    ~ Segments can overlap
+                    ~ We need a way to select the different segments
+                    ~ Highlight the segments that have the same color.
+                    ☐ Show a wavefrom on the editor
+                    ☐ Show the division
+                    ☐ Play current segment
+                    ☐ Play current segment with short-key
+                    ☐ Config the color of the segments
 
             FX Editor:
             ~ All the regular filters (LP, HP, etc)
@@ -57,6 +83,15 @@ Todo:
             ~ Distortion
             ~ Reverb
             ~ Echo
+            ~ Retrigger
 
+    Audio:
+        ☐ Create a 'service' for the audio
+
+    MIDI Support:
+        ~ we should have a custom directive or something we can add to controlls 
+            to trigger them with MIDI
 
 Archive:
+    ✔ Load a sample @done(19-06-13 23:23)
+    ✔ Getting started on a style @done(19-06-14 00:20)
