@@ -71,7 +71,7 @@ Todo:
                     ~ Highlight the segments that have the same color.
                     ✔ Show a wavefrom on the editor @done(19-06-17 20:52)
                     ☐ Show the division
-                    ☐ Play current segment
+                    ✔ Play current segment @done(19-06-17 23:51)
                     ☐ Play current segment with short-key
                     ☐ Config the color of the segments
                     ☐ Drag the right of the segment to change length

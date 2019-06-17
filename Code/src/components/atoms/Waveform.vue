@@ -21,8 +21,10 @@ export default {
   props: {
     width: String,
     height: String,
-    currentSegment: Segment
+    currentSegment: Segment,
+    buffer:[]
   },
+
   methods: {
     mousemoveOverlay: function(evt) {
       if (evt.buttons === 0) {
@@ -82,7 +84,8 @@ export default {
     drawOverlay(this.ctxOverlay, 0, this.width, this.height);
 
     sampleLoader
-      .load("/static/media/Ruffa%20Break%20170.094bd2f4.wav")
+      //.load("/static/media/Ruffa%20Break%20170.094bd2f4.wav")
+      .load('/samples/Ruffa Break 170.wav')
       .then(player => {
         this.buffer = player._buffer.get().getChannelData(0);
         this.currentSegment.bufferStart = 1 / 4.0;
