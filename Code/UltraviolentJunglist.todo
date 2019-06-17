@@ -69,11 +69,14 @@ Todo:
                     ~ Segments can overlap
                     ~ We need a way to select the different segments
                     ~ Highlight the segments that have the same color.
-                    ☐ Show a wavefrom on the editor
+                    ✔ Show a wavefrom on the editor @done(19-06-17 20:52)
                     ☐ Show the division
                     ☐ Play current segment
                     ☐ Play current segment with short-key
                     ☐ Config the color of the segments
+                    ☐ Drag the right of the segment to change length
+                    ✔ Drag the segment to change the start @done(19-06-17 23:19)
+                    ☐ Send an segment changed event when done dragging
 
             FX Editor:
             ~ All the regular filters (LP, HP, etc)

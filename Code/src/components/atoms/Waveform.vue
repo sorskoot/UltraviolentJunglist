@@ -1,44 +1,116 @@
 <template>
   <div id="waveformContainer">
-    <canvas id="waveform" width="1200" height="300"></canvas>
-    <canvas id="waveformOverlay" width="1200" height="300"></canvas>
+    <canvas id="waveform" :width="this.width" :height="this.height"></canvas>
+    <canvas
+      v-on:mousemove="mousemoveOverlay"
+      v-on:mousedown="mousedownOverlay"
+      v-on:mouseup="mouseupOverlay"
+      id="waveformOverlay"
+      :width="this.width"
+      :height="this.height"
+    ></canvas>
   </div>
 </template>
 
 <script>
 import sampleLoader from "../../lib/sample-loader";
+import { Segment } from "../../lib/models";
 
 export default {
   name: "uj-waveform",
-  props: {},
+  props: {
+    width: String,
+    height: String,
+    currentSegment: Segment
+  },
+  methods: {
+    mousemoveOverlay: function(evt) {
+      if (evt.buttons === 0) {
+        this.overlCvs.classList.remove("dragging");
+      }
+      let s = this.width * this.currentSegment.bufferStart;
+      let w = this.width * this.currentSegment.bufferLength + s;
+
+      if (evt.layerX > s && evt.layerX < w) {
+        this.overlCvs.classList.add("hover");
+      } else {
+        this.overlCvs.classList.remove("hover");
+      }
+
+      if (this.overlCvs.classList.contains("dragging")) {
+        this.currentSegment.bufferStart =
+          (evt.layerX - this.relativeStart) / this.width;
+        if (this.currentSegment.bufferStart < 0)
+          this.currentSegment.bufferStart = 0;
+        if (
+          this.currentSegment.bufferStart + this.currentSegment.bufferLength > 1
+        ) {
+          this.currentSegment.bufferStart =
+            1 - this.currentSegment.bufferLength;
+        }
+      }
+      drawOverlay(
+        this.ctxOverlay,
+        this.currentSegment.bufferStart,
+        this.currentSegment.bufferLength,
+        this.width,
+        this.height
+      );
+    },
+    mousedownOverlay: function(evt) {
+      if (this.overlCvs.classList.contains("hover")) {
+        this.relativeStart =
+          evt.layerX - this.currentSegment.bufferStart * this.width;
+
+        this.overlCvs.classList.add("dragging");
+      }
+    },
+    mouseupOverlay: function(evt) {
+      this.overlCvs.classList.remove("dragging");
+    }
+  },
   mounted() {
     let waveFormCvs = this.$el.querySelector("#waveform");
-    let overlCvs = this.$el.querySelector("#waveformOverlay");
 
     let ctx = waveFormCvs.getContext("2d");
-    let ctxOverlay = overlCvs.getContext("2d");
 
-    ctx.clearRect(0, 0, waveFormCvs.width, waveFormCvs.height);
-    ctxOverlay.clearRect(0, 0, overlCvs.width, overlCvs.height);
+    ctx.clearRect(0, 0, this.width, this.height);
 
-    ctxOverlay.fillStyle = "rgba(0,70,120, 25%)";
-    ctxOverlay.fillRect(0, 0, overlCvs.width / 16, overlCvs.height);
-    ctxOverlay.strokeStyle = "rgb(0,140,255)";
-    ctxOverlay.rect(0, 0, overlCvs.width / 16, overlCvs.height);
-    ctxOverlay.stroke();
+    this.overlCvs = this.$el.querySelector("#waveformOverlay");
+    this.ctxOverlay = this.overlCvs.getContext("2d");
+
+    drawOverlay(this.ctxOverlay, 0, this.width, this.height);
 
     sampleLoader
       .load("/static/media/Ruffa%20Break%20170.094bd2f4.wav")
       .then(player => {
-        renderWaveform(
-          ctx,
-          waveFormCvs.width,
-          waveFormCvs.height,
-          player._buffer.get().getChannelData(0)
+        this.buffer = player._buffer.get().getChannelData(0);
+        this.currentSegment.bufferStart = 1 / 4.0;
+        renderWaveform(ctx, this.width, this.height, this.buffer);
+        drawOverlay(
+          this.ctxOverlay,
+          this.currentSegment.bufferStart,
+          this.currentSegment.bufferLength,
+          this.width,
+          this.height
         );
       });
   }
 };
+
+function drawOverlay(ctxOverlay, bufferStart, bufferLength, width, height) {
+  let s = width * bufferStart;
+  let w = width * bufferLength;
+
+  ctxOverlay.clearRect(0, 0, width, height);
+
+  ctxOverlay.beginPath();
+  ctxOverlay.fillStyle = "rgba(0,70,120, 25%)";
+  ctxOverlay.strokeStyle = "rgb(0,140,255)";
+  ctxOverlay.rect(s, 0, w, height);
+  ctxOverlay.fill();
+  ctxOverlay.stroke();
+}
 
 function renderWaveform(ctx, width, height, data, zoom = 1) {
   // data.length
@@ -72,5 +144,8 @@ function renderWaveform(ctx, width, height, data, zoom = 1) {
   position: absolute;
   top: 0;
   left: 0;
+  &.hover {
+    cursor: pointer;
+  }
 }
 </style>
