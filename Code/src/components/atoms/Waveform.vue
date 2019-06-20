@@ -1,11 +1,11 @@
 <template>
-  <div id="waveformContainer">
-    <canvas id="waveform" :width="this.width" :height="this.height"></canvas>
+  <div class="waveformContainer">
+    <canvas class="waveform" :width="this.width" :height="this.height"></canvas>
     <canvas
       v-on:mousemove="mousemoveOverlay"
       v-on:mousedown="mousedownOverlay"
       v-on:mouseup="mouseupOverlay"
-      id="waveformOverlay"
+      class="waveformOverlay"
       :width="this.width"
       :height="this.height"
     ></canvas>
@@ -22,7 +22,7 @@ export default {
     width: String,
     height: String,
     currentSegment: Segment,
-    buffer:[]
+    buffer: []
   },
 
   methods: {
@@ -45,7 +45,8 @@ export default {
         if (this.currentSegment.bufferStart < 0)
           this.currentSegment.bufferStart = 0;
         if (
-          this.currentSegment.bufferStart + this.currentSegment.bufferLength > 1
+          this.currentSegment.bufferStart + this.currentSegment.bufferLength >
+          1
         ) {
           this.currentSegment.bufferStart =
             1 - this.currentSegment.bufferLength;
@@ -72,32 +73,37 @@ export default {
     }
   },
   mounted() {
-    let waveFormCvs = this.$el.querySelector("#waveform");
+    let waveFormCvs = this.$el.querySelector(".waveform");
 
-    let ctx = waveFormCvs.getContext("2d");
+    this.ctx = waveFormCvs.getContext("2d");
 
-    ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx.clearRect(0, 0, this.width, this.height);
 
-    this.overlCvs = this.$el.querySelector("#waveformOverlay");
+    this.overlCvs = this.$el.querySelector(".waveformOverlay");
     this.ctxOverlay = this.overlCvs.getContext("2d");
 
     drawOverlay(this.ctxOverlay, 0, this.width, this.height);
 
-    sampleLoader
-      //.load("/static/media/Ruffa%20Break%20170.094bd2f4.wav")
-      .load('/samples/Ruffa Break 170.wav')
-      .then(player => {
-        this.buffer = player._buffer.get().getChannelData(0);
-        this.currentSegment.bufferStart = 1 / 4.0;
-        renderWaveform(ctx, this.width, this.height, this.buffer);
-        drawOverlay(
-          this.ctxOverlay,
-          this.currentSegment.bufferStart,
-          this.currentSegment.bufferLength,
-          this.width,
-          this.height
-        );
-      });
+    // sampleLoader
+    //   //.load("/static/media/Ruffa%20Break%20170.094bd2f4.wav")
+    //   .load('/samples/Ruffa Break 170.wav')
+    //   .then(player => {
+    //     this.buffer = player._buffer.get().getChannelData(0);
+    //     this.currentSegment.bufferStart = 1 / 4.0;
+    //
+    //   });
+  },
+  watch: {
+    buffer: function(val) {
+      renderWaveform(this.ctx, this.width, this.height, this.buffer);
+      drawOverlay(
+        this.ctxOverlay,
+        this.currentSegment.bufferStart,
+        this.currentSegment.bufferLength,
+        this.width,
+        this.height
+      );
+    }
   }
 };
 
@@ -132,23 +138,23 @@ function renderWaveform(ctx, width, height, data, zoom = 1) {
 </script>
 
 <style scoped lang="scss">
-#waveformContainer {
+.waveformContainer {
   position: relative;
   margin: 50px;
-}
+  top: 200px;
+  .waveform {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
-#waveform {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-#waveformOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  &.hover {
-    cursor: pointer;
+  .waveformOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    &.hover {
+      cursor: pointer;
+    }
   }
 }
 </style>
