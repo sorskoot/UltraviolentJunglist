@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import sampleLoader from "../../lib/sample-loader";
+import { sampleLoader } from "../../lib";
 import { Segment } from "../../lib/models";
 
 export default {
@@ -21,10 +21,18 @@ export default {
   props: {
     width: String,
     height: String,
-    currentSegment: Segment,
-    buffer: []
+    currentSegment: {
+      type: Segment,
+      default: () => new Segment()
+    },
+    buffer: {
+      type: Float32Array,
+      default: () => new Float32Array()
+    }
   },
-
+  data: {
+      
+  },
   methods: {
     mousemoveOverlay: function(evt) {
       if (evt.buttons === 0) {
@@ -94,6 +102,16 @@ export default {
     //   });
   },
   watch: {
+    currentSegment: function(val) {
+      renderWaveform(this.ctx, this.width, this.height, this.buffer);
+      drawOverlay(
+        this.ctxOverlay,
+        this.currentSegment.bufferStart,
+        this.currentSegment.bufferLength,
+        this.width,
+        this.height
+      );
+    },
     buffer: function(val) {
       renderWaveform(this.ctx, this.width, this.height, this.buffer);
       drawOverlay(

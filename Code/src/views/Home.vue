@@ -1,14 +1,29 @@
 <template>
   <div class="home">
-    <uj-button v-on:click="load()">Load</uj-button>
+    <!-- <uj-button v-on:click="load()">Load</uj-button> -->
     <uj-button :disabled="!this.sampleLoaded" v-on:click="trigger()">Trigger</uj-button>
+    <uj-button :disabled="!this.sampleLoaded" v-on:click="start()">Start</uj-button>
+    <uj-button :disabled="!this.sampleLoaded" v-on:click="stop()">Stop</uj-button>
+    
     <div class="track-editor">
-        <uj-track-bar :current="current" :items="items" ></uj-track-bar>
+      <uj-track-bar :current="current" :items="items"></uj-track-bar>
     </div>
     <div class="waveform-editor">
-        <uj-waveform id="waveform" width="1200" height="300" 
-            :current-segment="currentSegment"
-            :buffer="buffer"></uj-waveform>
+      <div>
+        <uj-waveform
+          id="waveform"
+          width="1200"
+          height="300"
+          :current-segment="this.currentSegment"
+          :buffer="buffer"
+        ></uj-waveform>
+      </div>
+      <div>
+        <uj-dropdown :selected="selectedSample" :items="samples" @select="sampleSelected"></uj-dropdown>
+      </div>
+      <div>
+        <uj-dropdown :selected="currentSegment" :items="segments" @select="segmentSelected"></uj-dropdown>
+      </div>
     </div>
   </div>
 </template>
@@ -17,8 +32,9 @@
 // @ is an alias to /src
 import ujButton from "../components/atoms/Button";
 import ujWaveform from "../components/atoms/Waveform";
+import ujDropdown from "../components/atoms/Dropdown";
 import ujTrackBar from "../components/molecules/TrackBar";
-import sampleLoader from "../lib/sample-loader";
+import { Transport, sampleLoader } from "../lib";
 import { Segment } from "../lib/models";
 
 export default {
@@ -26,27 +42,78 @@ export default {
   components: {
     ujButton,
     ujWaveform,
-    ujTrackBar
+    ujTrackBar,
+    ujDropdown
   },
   data: function() {
     return {
-      currentSegment: new Segment(),
+      currentSegmentIndex: 0,
+      currentSegments: [...Array(16).keys()].map((key, i) => {
+        let segment = new Segment();
+        segment.bufferStart = i * (1 / 16);
+        segment.bufferLength = 1 / 16;
+        return segment;
+      }),
       sampleLoaded: false,
       player: undefined,
       items: new Array(16).fill(1),
-      current:0,
-      buffer: []
+      segments: [...Array(16).keys()],
+      current: 0,
+      buffer: new Float32Array(),
+      samples: sampleLoader.availableSamples,
+      selectedSample: ""
     };
   },
+  watch: {
+    selectedSample: function(val) {
+      console.log(val);
+    }
+  },
+  computed: {
+    currentSegment: function() {
+      console.log(this.currentSegments[this.currentSegmentIndex].bufferStart);
+      return this.currentSegments[this.currentSegmentIndex];
+    }
+  },
+  beforeCreate: function() {
+    this.transport = new Transport();
+    this.transport.pulse = function(p) {
+      this.current = p;
+      this.player.start(
+        undefined,
+        this.currentSegments[0].duration * this.currentSegments[p].bufferStart,
+        this.currentSegments[0].duration * this.currentSegments[p].bufferLength
+      );
+    }.bind(this);
+  },
   methods: {
-    load: async function() {
-      this.player = await sampleLoader.load();
-      this.buffer = this.player._buffer.get().getChannelData(0);
+    sampleSelected: function(sample) {
+      this.load(sample);
+    },
+    segmentSelected: function(seg) {
+      this.currentSegmentIndex = seg;
+    },
+    load: async function(sample) {
+      this.player = await sampleLoader.load(sample);
+      const buffer = this.player._buffer.get();
+      this.currentSegments[this.currentSegmentIndex].duration = buffer.duration;
+      this.buffer = buffer.getChannelData(0);
       this.sampleLoaded = true;
-
     },
     trigger: function() {
-     this.player.start(undefined, this.currentSegment.bufferStart, this.currentSegment.bufferLength);
+      this.player.start(
+        undefined,
+        this.currentSegments[0].duration *
+          this.currentSegments[this.currentSegmentIndex].bufferStart,
+        this.currentSegments[0].duration *
+          this.currentSegments[this.currentSegmentIndex].bufferLength
+      );
+    },
+    start: function() {
+      this.transport.start();
+    },
+    stop: function() {
+      this.transport.stop();
     }
   }
 };
