@@ -2,15 +2,12 @@ import Tone from 'tone';
 import { EventEmitter } from 'events';
 
 export class Transport {
-    
-    position = 0;
-    bpm = 170;
 
     pulse = (p) => { };
 
     constructor() {
-       
-        console.log('constructor');
+        this.position = 0;
+        this.bpm = 170;
         Tone.Transport.scheduleRepeat(function (time) {
             this.pulse(this.position);
             // //      self.dispatchEvent("pulse", { time: time, position: self.position });
@@ -21,6 +18,7 @@ export class Transport {
     }
 
     start() {
+        this.position = 0;
         Tone.Transport.loopStart = 0;
         Tone.Transport.loopEnd = "1m";
         Tone.Transport.loop = true;

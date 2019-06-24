@@ -4,7 +4,7 @@
     <uj-button :disabled="!this.sampleLoaded" v-on:click="trigger()">Trigger</uj-button>
     <uj-button :disabled="!this.sampleLoaded" v-on:click="start()">Start</uj-button>
     <uj-button :disabled="!this.sampleLoaded" v-on:click="stop()">Stop</uj-button>
-    
+    <input v-model="bpm" />
     <div class="track-editor">
       <uj-track-bar :current="current" :items="items"></uj-track-bar>
     </div>
@@ -33,6 +33,7 @@
 import ujButton from "../components/atoms/Button";
 import ujWaveform from "../components/atoms/Waveform";
 import ujDropdown from "../components/atoms/Dropdown";
+import ujInput from "../components/atoms/Input";
 import ujTrackBar from "../components/molecules/TrackBar";
 import { Transport, sampleLoader } from "../lib";
 import { Segment } from "../lib/models";
@@ -41,6 +42,7 @@ export default {
   name: "home",
   components: {
     ujButton,
+    ujInput,
     ujWaveform,
     ujTrackBar,
     ujDropdown
@@ -66,13 +68,19 @@ export default {
   },
   watch: {
     selectedSample: function(val) {
-      console.log(val);
     }
   },
   computed: {
     currentSegment: function() {
-      console.log(this.currentSegments[this.currentSegmentIndex].bufferStart);
       return this.currentSegments[this.currentSegmentIndex];
+    },
+    bpm: {
+      get: function() {
+        return this.transport.bpm;
+      },
+      set: function(val) {
+        this.transport.bpm = val;
+      }
     }
   },
   beforeCreate: function() {
