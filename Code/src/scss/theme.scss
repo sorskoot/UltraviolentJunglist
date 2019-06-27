@@ -1,44 +1,44 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400|Rubik:500,500i,700');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400|Rubik:500,500i,700");
 
-$header-font-family : 'Rubik', sans-serif;
-$text-font-family: 'Montserrat', sans-serif;
+$header-font-family: "Rubik", sans-serif;
+$text-font-family: "Montserrat", sans-serif;
 
 $dark: #1a0f24;
 $dark-grey: #4f4584;
-$light-grey:#d5daf6;
+$light-grey: #d5daf6;
 $light: #eae6d9;
 
 $accent: #9f2a55;
-$accent-lighter: lighten( $accent, 10% );
+$accent-lighter: lighten($accent, 10%);
 $accent-lightest: #fd45cf;
-$accent-darker: darken( $accent, 10% );
-$accent-disabled: darken(desaturate( $accent, 50% ), 20%);
+$accent-darker: darken($accent, 10%);
+$accent-disabled: darken(desaturate($accent, 50%), 20%);
 
-$danger: #FF4A4A;
-$danger-lighter: lighten( $danger, 10% );
-$danger-darker: darken( $danger, 10% );
-$danger-disabled: darken(desaturate( $danger, 25% ), 20%);
+$danger: #ff4a4a;
+$danger-lighter: lighten($danger, 10%);
+$danger-darker: darken($danger, 10%);
+$danger-disabled: darken(desaturate($danger, 25%), 20%);
 
-$success: #27CC54;
-$success-lighter: lighten( $success, 10% );
-$success-darker: darken( $success, 10% );
-$success-disabled: darken(desaturate( $success, 25% ), 20%);
+$success: #27cc54;
+$success-lighter: lighten($success, 10%);
+$success-darker: darken($success, 10%);
+$success-disabled: darken(desaturate($success, 25%), 20%);
 
 h1 {
-    font-family: $header-font-family;
-    font-size: 48px;
-    font-weight: 700;
-    color: $light-grey;
+  font-family: $header-font-family;
+  font-size: 48px;
+  font-weight: 700;
+  color: $light-grey;
 }
 
-body{
-    background-color: $dark;
+body {
+  background-color: $dark;
 }
 
 %text {
-    font-family: $text-font-family;
-    font-size: 1em;
-    font-weight: 300;
+  font-family: $text-font-family;
+  font-size: 1em;
+  font-weight: 300;
 }
 
 $magic-number: 6px;
@@ -61,6 +61,54 @@ $width-m: $magic-number * 75;
 $width-l: $magic-number * 100;
 
 $ease-speed: 75ms;
-$ease-curve: cubic-bezier(1.000, 0.000, 1.000, 1.000);
+$ease-curve: cubic-bezier(1, 0, 1, 1);
 $ease: all $ease-speed $ease-curve;
 $ease-color: color $ease-speed $ease-curve;
+
+$track-group-color-0: #9f2a55;
+$track-group-color-1: #9f552a;
+$track-group-color-2: #9f972a;
+$track-group-color-3: #4b9f2a;
+$track-group-color-4: #2a9f95;
+$track-group-color-5: #2a3c9f;
+$track-group-color-6: #912a9f;
+$track-group-color-7: #c22929;
+$track-group-disabled: #585858;
+
+.track-group-color-0 {
+  background-color: $track-group-color-0;
+  border-color: darken($track-group-color-0, 25%);
+}
+.track-group-color-1 {
+  background-color: $track-group-color-1;
+  border-color: darken($track-group-color-1, 25%);
+}
+.track-group-color-2 {
+  background-color: $track-group-color-2;
+  border-color: darken($track-group-color-2, 25%);
+}
+.track-group-color-3 {
+  background-color: $track-group-color-3;
+  border-color: darken($track-group-color-3, 25%);
+}
+.track-group-color-4 {
+  background-color: $track-group-color-4;
+  border-color: darken($track-group-color-4, 25%);
+}
+.track-group-color-5 {
+  background-color: $track-group-color-5;
+  border-color: darken($track-group-color-5, 25%);
+}
+.track-group-color-6 {
+  background-color: $track-group-color-6;
+  border-color: darken($track-group-color-6, 25%);
+}
+.track-group-color-7 {
+  background-color: $track-group-color-7;
+  border-color: darken($track-group-color-7, 25%);
+}
+
+.track-group-disabled {
+  background-color: $track-group-disabled;
+  border-color: darken($track-group-disabled, 25%);
+}

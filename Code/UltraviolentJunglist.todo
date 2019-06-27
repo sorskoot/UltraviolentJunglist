@@ -56,11 +56,12 @@ Todo:
 
             ☐ Edit a track
             Track Bar:
-                ✔ Create the trackbar @today @done(19-06-20 23:37)
+                ✔ Create the trackbar @done(19-06-20 23:37)
 
                 Track Bar Button:
-                    ✔ Create the trackbarButtons @today @done(19-06-20 23:37)
+                    ✔ Create the trackbarButtons @done(19-06-20 23:37)
                      ☐ we need a name for this. ==> items
+                     ✔ Change 'color' by clicking @done(19-06-27 22:41)
                      ☐ change 'color' by dragging up or down
 
         Sample Editor:
@@ -75,7 +76,7 @@ Todo:
                     ~ Segments can overlap
                     ~ complete custom control
                     ~ a canvas that shows the waveform of the selected sample
-                    ☐ select segments in on the waveform. @today
+                    ☐ select segments in on the waveform.
                     ☐ drag the end of the segment to make it longer or shorter.
                     ☐ We need a way to select the different segments
                     ☐ Highlight the segments that have the same color.

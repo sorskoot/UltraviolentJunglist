@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/vue';
-
 import ujTrackButton from './TrackButton.vue';
 
 storiesOf('2.Atoms|uj-track-button', module)
