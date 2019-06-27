@@ -1,37 +1,44 @@
 <template>
-  <div
-    @click="increaseGroup"
-    :class="`track-button ${calculateColor} ${current?'current':''}`"
-  ></div>
+  <div @click="increaseGroup" :class="`track-button ${calculateColor} ${current?'current':''}`"></div>
 </template>
 
 <script>
 export default {
   name: "ujTrackButton",
   props: {
-    current: false
+    current: {
+        type:Boolean,
+        default: false
+    },
+    disabled: {
+        type:Boolean,
+        default: false
+    },
+    group: Number
   },
   data: function() {
     return {
-      group: 0
+      internalGroup: this.group
     };
   },
-  computed:{
-      calculateColor:function(){
-          if(~this.group){
-            return `track-group-color-${this.group}`
-          }else{
-              return 'track-group-disabled';
-          }
+  computed: {
+    calculateColor: function() {
+      if (~this.internalGroup) {
+        return `track-group-color-${this.internalGroup}`;
+      } else {
+        return "track-group-disabled";
       }
+    }
   },
   methods: {
     increaseGroup: function() {
-      this.group++;
-      if(this.group > 7){
-          this.group = -1
+      if (!this.disabled) {
+        this.internalGroup++;
+        if (this.internalGroup > 7) {
+          this.internalGroup = -1;
+        }
       }
-      this.$emit('change',this.group);
+      this.$emit("change", this.internalGroup);
     }
   }
 };

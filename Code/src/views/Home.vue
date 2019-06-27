@@ -22,7 +22,10 @@
         <uj-dropdown :selected="selectedSample" :items="samples" @select="sampleSelected"></uj-dropdown>
       </div>
       <div>
-        <uj-dropdown :selected="currentSegment" :items="segments" @select="segmentSelected"></uj-dropdown>
+        <uj-dropdown :selected="currentSegmentIndex" :items="segments" @select="segmentSelected"></uj-dropdown>
+      </div>
+      <div>
+        <uj-group-selector :selected="currentSegment.group" @change="groupChanged"></uj-group-selector>
       </div>
     </div>
   </div>
@@ -35,6 +38,7 @@ import ujWaveform from "../components/atoms/Waveform";
 import ujDropdown from "../components/atoms/Dropdown";
 import ujInput from "../components/atoms/Input";
 import ujTrackBar from "../components/molecules/TrackBar";
+import ujGroupSelector from "../components/molecules/GroupSelector";
 import { Transport, sampleLoader } from "../lib";
 import { Segment } from "../lib/models";
 
@@ -45,7 +49,8 @@ export default {
     ujInput,
     ujWaveform,
     ujTrackBar,
-    ujDropdown
+    ujDropdown,
+    ujGroupSelector
   },
   data: function() {
     return {
@@ -70,6 +75,9 @@ export default {
     selectedSample: function(val) {}
   },
   computed: {
+    currentSegmentGroup: function() {
+      return this.currentSegments[this.currentSegmentIndex].group;
+    },
     currentSegment: function() {
       return this.currentSegments[this.currentSegmentIndex];
     },
@@ -87,17 +95,21 @@ export default {
     this.transport.pulse = function(p) {
       this.current = p;
       if (~this.items[p]) {
-        this.player.start(
-          undefined,
-          this.currentSegments[0].duration *
-            this.currentSegments[this.items[p]].bufferStart,
-          this.currentSegments[0].duration *
-            this.currentSegments[this.items[p]].bufferLength
-        );
+        let segmentToPlay = this.getRandomSegmentByGroup(this.items[p]);
+        if (segmentToPlay) {
+          this.player.start(
+            undefined,
+            this.currentSegments[0].duration * segmentToPlay.bufferStart,
+            this.currentSegments[0].duration * segmentToPlay.bufferLength
+          );
+        }
       }
     }.bind(this);
   },
   methods: {
+    groupChanged: function(newGroup) {
+      this.currentSegment.group = newGroup;
+    },
     sampleSelected: function(sample) {
       this.load(sample);
     },
@@ -107,7 +119,7 @@ export default {
     load: async function(sample) {
       this.player = await sampleLoader.load(sample);
       const buffer = this.player._buffer.get();
-      this.currentSegments[this.currentSegmentIndex].duration = buffer.duration;
+      this.currentSegments[0].duration = buffer.duration;
       this.buffer = buffer.getChannelData(0);
       this.sampleLoaded = true;
     },
@@ -125,6 +137,12 @@ export default {
     },
     stop: function() {
       this.transport.stop();
+    },
+    getRandomSegmentByGroup: function(group) {
+      let segments = this.currentSegments.filter(s => s.group == group);
+      const newLocal = ~~(Math.random() * segments.length);
+      console.log(newLocal);
+      return segments[newLocal];
     }
   }
 };
