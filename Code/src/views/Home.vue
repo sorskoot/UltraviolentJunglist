@@ -4,7 +4,7 @@
     <uj-button :disabled="!this.sampleLoaded" v-on:click="trigger()">Trigger</uj-button>
     <uj-button :disabled="!this.sampleLoaded" v-on:click="start()">Start</uj-button>
     <uj-button :disabled="!this.sampleLoaded" v-on:click="stop()">Stop</uj-button>
-    <input v-model="bpm" />
+    <input v-model="bpm">
     <div class="track-editor">
       <uj-track-bar :current="current" :items="items"></uj-track-bar>
     </div>
@@ -58,7 +58,7 @@ export default {
       }),
       sampleLoaded: false,
       player: undefined,
-      items: new Array(16).fill(1),
+      items: new Array(16).fill(0),
       segments: [...Array(16).keys()],
       current: 0,
       buffer: new Float32Array(),
@@ -67,8 +67,7 @@ export default {
     };
   },
   watch: {
-    selectedSample: function(val) {
-    }
+    selectedSample: function(val) {}
   },
   computed: {
     currentSegment: function() {
@@ -87,11 +86,15 @@ export default {
     this.transport = new Transport();
     this.transport.pulse = function(p) {
       this.current = p;
-      this.player.start(
-        undefined,
-        this.currentSegments[0].duration * this.currentSegments[p].bufferStart,
-        this.currentSegments[0].duration * this.currentSegments[p].bufferLength
-      );
+      if (~this.items[p]) {
+        this.player.start(
+          undefined,
+          this.currentSegments[0].duration *
+            this.currentSegments[this.items[p]].bufferStart,
+          this.currentSegments[0].duration *
+            this.currentSegments[this.items[p]].bufferLength
+        );
+      }
     }.bind(this);
   },
   methods: {
