@@ -5,6 +5,7 @@ $text-font-family: "Montserrat", sans-serif;
 
 $dark: #1a0f24;
 $dark-grey: #4f4584;
+$dark-grey-lighter: lighten($dark-grey, 10%);
 $light-grey: #d5daf6;
 $light: #eae6d9;
 

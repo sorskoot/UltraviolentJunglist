@@ -1,6 +1,6 @@
 <template>
   <div class="slider">
-    <input class="slider-input" :value="value" :min="min" :max="max" :step="step" type="range" />
+    <input class="slider-input" @change="change" :value="value" :min="min" :max="max" :step="step" type="range" />
   </div>
 </template>
 
@@ -12,7 +12,13 @@ export default {
     min: { type: Number, default: 0 },
     value: { type: Number, default: 64 },
     step: { type: Number, default: 1 }
+  },
+  methods:{
+      change:function(event){
+          this.$emit('change', event.srcElement.value);
+      }
   }
+  
 };
 </script>
 
@@ -20,11 +26,12 @@ export default {
 @import "../../scss/theme.scss";
 
 .slider {
-  display: inline;
+  display: inline-block;
+  width: 100%;
   input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
-    margin: 13.8px 0;
+    //margin: 13.8px 0;
   }
   input[type="range"]:focus {
     outline: none;
