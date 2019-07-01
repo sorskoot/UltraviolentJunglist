@@ -5,7 +5,8 @@ Generate music with semi-random controls
 
 Todo:
     Style:
-   
+        ☐ Add a `for` to the SCSS for the trackbar buttons
+
     Overall:
         ☐ Export a song to a Wav or MP3
         ☐ Random can be totally random or with a specific seed
@@ -16,7 +17,6 @@ Todo:
         ☐ needs a logo
         ☐ Come up with an object model
     Model:
-
     - ideas:
         Song
             Pattern []
@@ -90,14 +90,22 @@ Todo:
                     ☐ Send an segment changed event when done dragging
 
             FX Editor:
-            ~ All the regular filters (LP, HP, etc)
-            ~ Sweepable. Start to finish
-            ~ Glitch effect
-            ~ Bit depth
-            ~ Distortion
-            ~ Reverb
-            ~ Echo
-            ~ Retrigger
+                ☐ All the regular filters: 
+                    ☐ lowpass
+                    ☐ highpass
+                    ☐ bandpass
+                    ☐ lowshelf
+                    ☐ highshelf
+                    ☐ peaking
+                    ☐ notch
+                    ☐ allpas
+                ☐ Sweepable. Start to finish
+                ☐ Glitch effect
+                ☐ Bitcrusher
+                ☐ Distortion
+                ☐ Reverb
+                ☐ Delay
+                ☐ Retrigger @today
 
     Audio:
         ☐ Create a 'service' for the audio

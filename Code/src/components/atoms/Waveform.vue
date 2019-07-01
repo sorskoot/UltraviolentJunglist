@@ -1,4 +1,5 @@
 <template>
+<div class="waveformTemplate" >
   <div class="waveformContainer">
     <canvas class="waveform" :width="this.width" :height="this.height"></canvas>
     <canvas
@@ -9,6 +10,7 @@
       :width="this.width"
       :height="this.height"
     ></canvas>
+  </div>
   </div>
 </template>
 
@@ -156,23 +158,26 @@ function renderWaveform(ctx, width, height, data, zoom = 1) {
 </script>
 
 <style scoped lang="scss">
-.waveformContainer {
-  position: relative;
-  margin: 50px;
-  top: 200px;
-  .waveform {
+.waveformTemplate{
+    height:300px;
+    margin:50px;
+    .waveformContainer {
     position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  .waveformOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    &.hover {
-      cursor: pointer;
+    
+    .waveform {
+        position: absolute;
+        top: 0;
+        left: 0;
     }
-  }
+
+    .waveformOverlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        &.hover {
+        cursor: pointer;
+        }
+    }
+    }
 }
 </style>
