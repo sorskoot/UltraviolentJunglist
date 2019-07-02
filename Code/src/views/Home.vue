@@ -1,10 +1,9 @@
 <template>
   <div class="home">
-    <!-- <uj-button v-on:click="load()">Load</uj-button> -->
     <uj-button :disabled="!this.sampleLoaded" v-on:click="trigger()">Trigger</uj-button>
     <uj-button :disabled="!this.sampleLoaded" v-on:click="start()">Start</uj-button>
     <uj-button :disabled="!this.sampleLoaded" v-on:click="stop()">Stop</uj-button>
-    <input v-model="bpm">
+    <input v-model="bpm" />
     <div class="track-editor">
       <uj-track-bar :current="current" :items="items"></uj-track-bar>
     </div>
@@ -18,14 +17,25 @@
           :buffer="buffer"
         ></uj-waveform>
       </div>
-      <div>
-        <uj-dropdown :selected="selectedSample" :items="samples" @select="sampleSelected"></uj-dropdown>
-      </div>
-      <div>
-        <uj-dropdown :selected="currentSegmentIndex" :items="segments" @select="segmentSelected"></uj-dropdown>
-      </div>
-      <div>
-        <uj-group-selector :selected="currentSegment.group" @change="groupChanged"></uj-group-selector>
+      <div class="waveform-properties">
+        <div>
+          <uj-dropdown :selected="currentSegmentIndex" :items="segments" @select="segmentSelected"></uj-dropdown>
+        </div>
+        <div>
+          <uj-group-selector :selected="currentSegment.group" @change="groupChanged"></uj-group-selector>
+        </div>
+        <div>
+          <uj-dropdown :selected="selectedSample" :items="samples" @select="sampleSelected"></uj-dropdown>
+        </div>
+        <div>
+          <uj-property-slider
+            label="retrigger"
+            @change="(v)=>currentSegment.retrigger = v"
+            :value="currentSegment.retrigger"
+            :min="1"
+            :max="16"
+          ></uj-property-slider>
+        </div>
       </div>
     </div>
   </div>
@@ -39,8 +49,10 @@ import ujDropdown from "../components/atoms/Dropdown";
 import ujInput from "../components/atoms/Input";
 import ujTrackBar from "../components/molecules/TrackBar";
 import ujGroupSelector from "../components/molecules/GroupSelector";
+import ujPropertySlider from "../components/molecules/PropertySlider";
 import { Transport, sampleLoader } from "../lib";
 import { Segment } from "../lib/models";
+import Tone from "tone";
 
 export default {
   name: "home",
@@ -50,7 +62,8 @@ export default {
     ujWaveform,
     ujTrackBar,
     ujDropdown,
-    ujGroupSelector
+    ujGroupSelector,
+    ujPropertySlider
   },
   data: function() {
     return {
@@ -97,11 +110,7 @@ export default {
       if (~this.items[p]) {
         let segmentToPlay = this.getRandomSegmentByGroup(this.items[p]);
         if (segmentToPlay) {
-          this.player.start(
-            undefined,
-            this.currentSegments[0].duration * segmentToPlay.bufferStart,
-            this.currentSegments[0].duration * segmentToPlay.bufferLength
-          );
+          this.trigger(segmentToPlay);
         }
       }
     }.bind(this);
@@ -123,14 +132,28 @@ export default {
       this.buffer = buffer.getChannelData(0);
       this.sampleLoaded = true;
     },
-    trigger: function() {
-      this.player.start(
-        undefined,
-        this.currentSegments[0].duration *
-          this.currentSegments[this.currentSegmentIndex].bufferStart,
-        this.currentSegments[0].duration *
-          this.currentSegments[this.currentSegmentIndex].bufferLength
-      );
+    trigger: function(
+      segmentToPlay = this.currentSegments[this.currentSegmentIndex]
+    ) {
+      let buffer = this.player._buffer.get();
+      let length = this.transport.beat();
+      const duration = length / segmentToPlay.retrigger;
+      
+      for (let i = 0; i < segmentToPlay.retrigger; i++) {
+        let source = Tone.context.createBufferSource();
+        
+        source.connect(Tone.context.destination);
+        source.buffer = buffer;
+        let d = i*duration;
+        let n = Tone.context.currentTime + d;
+        source.start(
+          n,
+          this.currentSegments[0].duration * segmentToPlay.bufferStart,
+          this.currentSegments[0].duration *
+            (segmentToPlay.bufferLength / segmentToPlay.retrigger)
+        );
+        
+      }
     },
     start: function() {
       this.transport.start();
@@ -147,3 +170,19 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../scss/theme.scss";
+.waveform-editor {
+  margin: $margin-l;
+  border: 1px solid $accent;
+  .waveform-properties {
+    max-width: 1200px;
+    margin: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    row-gap: 2em;
+    //   grid-template-areas: ". . ." ". . ." ". . .";
+  }
+}
+</style>

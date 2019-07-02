@@ -7,9 +7,9 @@ export class Transport {
 
     constructor() {
         this.position = 0;
-        this.bpm = 170;
+        this.bpm = 138;
         Tone.Transport.scheduleRepeat(function (time) {
-            this.pulse(this.position);
+            this.pulse(this.position, time);
             // //      self.dispatchEvent("pulse", { time: time, position: self.position });
             this.position++;
             if (this.position >= 16)
@@ -38,6 +38,10 @@ export class Transport {
     stop() {
         Tone.Transport.stop();
     }
+
+    beat(){ return 60.0 / this.bpm; } 
+
+    sixteenth() { return beat / 16.0; }
 }
 
 //export const transport = new Transport();

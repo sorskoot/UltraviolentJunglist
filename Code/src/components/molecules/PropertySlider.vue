@@ -34,7 +34,7 @@ export default {
   methods: {
     change: function(val) {
       this.internalValue = val;
-      this.$emit("change", val);
+      this.$emit("change", +val);
     }
   }
 };

@@ -160,6 +160,7 @@ function renderWaveform(ctx, width, height, data, zoom = 1) {
 <style scoped lang="scss">
 .waveformTemplate{
     height:300px;
+    width:1200px;
     margin:50px;
     .waveformContainer {
     position: absolute;
