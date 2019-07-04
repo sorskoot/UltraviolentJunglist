@@ -13,8 +13,7 @@
 </template>
 
 <script>
-import ujLabel from "../atoms/Label";
-import ujSlider from "../atoms/Slider";
+import {ujLabel, ujSlider} from "../atoms/index.js";
 
 export default {
   name: "uj-property-slider",

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ujTrackButton from "../atoms/TrackButton";
+import {ujTrackButton} from "../atoms/index.js";
 
 export default {
   name: "uj-group-selector",

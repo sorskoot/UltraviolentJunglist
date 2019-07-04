@@ -6,9 +6,9 @@
       <uj-button :disabled="!this.sampleLoaded" v-on:click="stop()">Stop</uj-button>
       <input v-model="bpm" />
     </div>
-    <div class="track-editor">
-      <uj-track-bar :current="current" :items="items"></uj-track-bar>
-    </div>
+
+    <uj-track-editor :current="current" :track="track"></uj-track-editor>
+
     <div class="waveform-editor">
       <div>
         <uj-waveform
@@ -45,6 +45,8 @@
 
 <script>
 // @ is an alias to /src
+import {ujTrackEditor} from '../components/templates/index.js';
+
 import ujButton from "../components/atoms/Button";
 import ujWaveform from "../components/atoms/Waveform";
 import ujDropdown from "../components/atoms/Dropdown";
@@ -65,7 +67,8 @@ export default {
     ujTrackBar,
     ujDropdown,
     ujGroupSelector,
-    ujPropertySlider
+    ujPropertySlider,
+    ujTrackEditor
   },
   data: function() {
     return {
@@ -78,7 +81,9 @@ export default {
       }),
       sampleLoaded: false,
       player: undefined,
-      items: new Array(16).fill(0),
+      track:{
+          items: [new Array(16).fill(0)]
+      },
       segments: [...Array(16).keys()],
       current: 0,
       buffer: new Float32Array(),
@@ -109,8 +114,8 @@ export default {
     this.transport = new Transport();
     this.transport.pulse = function(p) {
       this.current = p;
-      if (~this.items[p]) {
-        let segmentToPlay = this.getRandomSegmentByGroup(this.items[p]);
+      if (~this.track.items[0][p]) {
+        let segmentToPlay = this.getRandomSegmentByGroup(this.track.items[0][p]);
         if (segmentToPlay) {
           this.trigger(segmentToPlay);
         }
