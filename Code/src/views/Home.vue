@@ -1,9 +1,11 @@
 <template>
   <div class="home">
-    <uj-button :disabled="!this.sampleLoaded" v-on:click="trigger()">Trigger</uj-button>
-    <uj-button :disabled="!this.sampleLoaded" v-on:click="start()">Start</uj-button>
-    <uj-button :disabled="!this.sampleLoaded" v-on:click="stop()">Stop</uj-button>
-    <input v-model="bpm" />
+    <div class="transport">
+      <uj-button :disabled="!this.sampleLoaded" v-on:click="trigger()">Trigger</uj-button>
+      <uj-button :disabled="!this.sampleLoaded" v-on:click="start()">Start</uj-button>
+      <uj-button :disabled="!this.sampleLoaded" v-on:click="stop()">Stop</uj-button>
+      <input v-model="bpm" />
+    </div>
     <div class="track-editor">
       <uj-track-bar :current="current" :items="items"></uj-track-bar>
     </div>
@@ -138,13 +140,13 @@ export default {
       let buffer = this.player._buffer.get();
       let length = this.transport.beat();
       const duration = length / segmentToPlay.retrigger;
-      
+
       for (let i = 0; i < segmentToPlay.retrigger; i++) {
         let source = Tone.context.createBufferSource();
-        
+
         source.connect(Tone.context.destination);
         source.buffer = buffer;
-        let d = i*duration;
+        let d = i * duration;
         let n = Tone.context.currentTime + d;
         source.start(
           n,
@@ -152,7 +154,6 @@ export default {
           this.currentSegments[0].duration *
             (segmentToPlay.bufferLength / segmentToPlay.retrigger)
         );
-        
       }
     },
     start: function() {
@@ -173,6 +174,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/theme.scss";
+.transport{
+      margin: $margin-l;
+  border: 1px solid $accent;
+}
 .waveform-editor {
   margin: $margin-l;
   border: 1px solid $accent;
