@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-      <ujTransport :disabled="!sampleLoaded"></ujTransport>
-      <uj-track-editor :current="current" :track="track"></uj-track-editor>
+    <ujTransport :disabled="!sampleLoaded"></ujTransport>
+    <uj-track-editor :current="current" :track="track"></uj-track-editor>
 
     <div class="waveform-editor">
       <div>
@@ -19,12 +19,15 @@
           <uj-dropdown :selected="currentSegmentIndex" :items="segments" @select="segmentSelected"></uj-dropdown>
         </div>
         <div>
-          <uj-group-selector :selected="currentSegment.group" @change="groupChanged"></uj-group-selector>
+          <uj-group-selector
+            :selected="currentSegment?currentSegment.group:0"
+            @change="groupChanged"
+          ></uj-group-selector>
         </div>
         <div>
           <uj-dropdown :selected="selectedSample" :items="samples" @select="sampleSelected"></uj-dropdown>
         </div>
-        <div>
+        <div v-if="!!currentSegment">
           <uj-property-slider
             label="retrigger"
             @change="(v)=>currentSegment.retrigger = v"
@@ -40,9 +43,13 @@
 
 <script>
 // @ is an alias to /src
-import {ujTrackEditor, ujTransport} from '@/components/templates';
-import {ujButton,ujWaveform,ujDropdown,ujInput} from "@/components/atoms";
-import {ujTrackBar,ujGroupSelector,ujPropertySlider} from "@/components/molecules";
+import { ujTrackEditor, ujTransport } from "@/components/templates";
+import { ujButton, ujWaveform, ujDropdown, ujInput } from "@/components/atoms";
+import {
+  ujTrackBar,
+  ujGroupSelector,
+  ujPropertySlider
+} from "@/components/molecules";
 import { transport, sampleLoader } from "@/lib";
 import { Segment } from "@/lib/models";
 import Tone from "tone";
@@ -57,21 +64,17 @@ export default {
     ujDropdown,
     ujGroupSelector,
     ujPropertySlider,
-    ujTrackEditor,ujTransport
+    ujTrackEditor,
+    ujTransport
   },
   data: function() {
     return {
       currentSegmentIndex: 0,
-      currentSegments: [...Array(16).keys()].map((key, i) => {
-        let segment = new Segment();
-        segment.bufferStart = i * (1 / 16);
-        segment.bufferLength = 1 / 16;
-        return segment;
-      }),
+      currentSegments: [],
       sampleLoaded: false,
       player: undefined,
-      track:{
-          items: [new Array(16).fill(0)]
+      track: {
+        items: [new Array(16).fill(0)]
       },
       segments: [...Array(16).keys()],
       current: 0,
@@ -85,31 +88,28 @@ export default {
   },
   computed: {
     currentSegmentGroup: function() {
-      return this.currentSegments[this.currentSegmentIndex].group;
+      if (this.currentSegmentIndex < this.currentSegments.length) {
+        return this.currentSegments[this.currentSegmentIndex].group;
+      }
     },
+
     currentSegment: function() {
       return this.currentSegments[this.currentSegmentIndex];
-    },
-    bpm: {
-      get: function() {
-        return this.transport.bpm;
-      },
-      set: function(val) {
-        this.transport.bpm = val;
-      }
     }
   },
   beforeCreate: function() {
-     transport.pulse = function(p) {
+    transport.pulse = function(p) {
       this.current = p;
       if (~this.track.items[0][p]) {
-        let segmentToPlay = this.getRandomSegmentByGroup(this.track.items[0][p]);
+        let segmentToPlay = this.getRandomSegmentByGroup(
+          this.track.items[0][p]
+        );
         if (segmentToPlay) {
           this.trigger(segmentToPlay);
         }
       }
     }.bind(this);
-},
+  },
   methods: {
     groupChanged: function(newGroup) {
       this.currentSegment.group = newGroup;
@@ -122,6 +122,20 @@ export default {
     },
     load: async function(sample) {
       this.player = await sampleLoader.load(sample);
+      const dur=(transport.bpm/60) * this.player._buffer.duration;
+      let durationOptions = [
+            {key:4, value:Math.abs(4-dur)},
+            {key:8, value:Math.abs(8-dur)},
+            {key:16, value:Math.abs(16-dur)},
+            {key:32, value:Math.abs(32-dur)}
+      ]
+      let numberOfSegments = durationOptions.sort((a,b)=>a.value-b.value)[0].key;
+      this.currentSegments = [...Array(numberOfSegments).keys()].map((key, i) => {
+        let segment = new Segment();
+        segment.bufferStart = i * (1 / numberOfSegments);
+        segment.bufferLength = 1 / numberOfSegments;
+        return segment;
+      });
       const buffer = this.player._buffer.get();
       this.currentSegments[0].duration = buffer.duration;
       this.buffer = buffer.getChannelData(0);
@@ -149,7 +163,7 @@ export default {
         );
       }
     },
-   
+
     getRandomSegmentByGroup: function(group) {
       let segments = this.currentSegments.filter(s => s.group == group);
       const newLocal = ~~(Math.random() * segments.length);

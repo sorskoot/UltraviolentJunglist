@@ -1,14 +1,11 @@
 <template>
   <div class="transport">
-      <uj-transport-buttons :disabled="disabled" 
-        v-on:play="play" 
-        v-on:stop="stop" ></uj-transport-buttons>
+    <uj-transport-buttons :disabled="disabled" v-on:play="play" v-on:stop="stop"></uj-transport-buttons>
     <input v-model="internalBpm" />
   </div>
 </template>
 
 <script>
-
 import { ujTransportButtons } from "@/components/organisms";
 import { transport } from "@/lib";
 
@@ -18,24 +15,28 @@ export default {
   props: {
     disabled: Boolean,
     bpm: {
-        type:Number,
-        default:120
+      type: Number,
+      default: 120
     }
   },
-  data:function(){
-      return {
-          internalBpm:this.bpm
-      }
+  data: function() {
+    return {
+      internalBpm: this.bpm
+    };
   },
   watch: {
     bpm: function(val) {
-        this.internalBpm=val;
+      this.internalBpm = val;
+      
+    },
+    internalBpm: function(val){
+        transport.bpm = val;
     }
   },
   methods: {
     play: function() {
-        transport.bpm = this.internalBpm;
-        transport.start();
+      transport.bpm = this.internalBpm;
+      transport.start();
     },
     stop: function() {
       transport.stop();

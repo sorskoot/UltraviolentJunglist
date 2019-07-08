@@ -8,7 +8,7 @@ class Transport {
 
     constructor() {
         this.position = 0;
-        this.bpm = 138;
+        this.bpm = 120;
         Tone.Transport.scheduleRepeat(function (time) {
             this.pulse(this.position, time);
             // //      self.dispatchEvent("pulse", { time: time, position: self.position });
