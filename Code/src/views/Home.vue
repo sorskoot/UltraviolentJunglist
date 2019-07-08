@@ -1,13 +1,7 @@
 <template>
   <div class="home">
-    <div class="transport">
-      <uj-button :disabled="!this.sampleLoaded" v-on:click="trigger()">Trigger</uj-button>
-      <uj-button :disabled="!this.sampleLoaded" v-on:click="start()">Start</uj-button>
-      <uj-button :disabled="!this.sampleLoaded" v-on:click="stop()">Stop</uj-button>
-      <input v-model="bpm" />
-    </div>
-
-    <uj-track-editor :current="current" :track="track"></uj-track-editor>
+      <ujTransport :disabled="!sampleLoaded"></ujTransport>
+      <uj-track-editor :current="current" :track="track"></uj-track-editor>
 
     <div class="waveform-editor">
       <div>
@@ -18,6 +12,7 @@
           :current-segment="this.currentSegment"
           :buffer="buffer"
         ></uj-waveform>
+        <uj-button :disabled="!sampleLoaded" v-on:click="trigger()">Trigger</uj-button>
       </div>
       <div class="waveform-properties">
         <div>
@@ -45,12 +40,12 @@
 
 <script>
 // @ is an alias to /src
-import {ujTrackEditor} from '../components/templates';
+import {ujTrackEditor, ujTransport} from '@/components/templates';
 
-import {ujButton,ujWaveform,ujDropdown,ujInput} from "../components/atoms";
-import {ujTrackBar,ujGroupSelector,ujPropertySlider} from "../components/molecules";
-import { Transport, sampleLoader } from "../lib";
-import { Segment } from "../lib/models";
+import {ujButton,ujWaveform,ujDropdown,ujInput} from "@/components/atoms";
+import {ujTrackBar,ujGroupSelector,ujPropertySlider} from "@/components/molecules";
+import { transport, sampleLoader } from "@/lib";
+import { Segment } from "@/lib/models";
 import Tone from "tone";
 
 export default {
@@ -63,7 +58,7 @@ export default {
     ujDropdown,
     ujGroupSelector,
     ujPropertySlider,
-    ujTrackEditor
+    ujTrackEditor,ujTransport
   },
   data: function() {
     return {
@@ -106,8 +101,7 @@ export default {
     }
   },
   beforeCreate: function() {
-    this.transport = new Transport();
-    this.transport.pulse = function(p) {
+     transport.pulse = function(p) {
       this.current = p;
       if (~this.track.items[0][p]) {
         let segmentToPlay = this.getRandomSegmentByGroup(this.track.items[0][p]);
@@ -116,7 +110,7 @@ export default {
         }
       }
     }.bind(this);
-  },
+},
   methods: {
     groupChanged: function(newGroup) {
       this.currentSegment.group = newGroup;
@@ -138,7 +132,7 @@ export default {
       segmentToPlay = this.currentSegments[this.currentSegmentIndex]
     ) {
       let buffer = this.player._buffer.get();
-      let length = this.transport.beat();
+      let length = transport.beat();
       const duration = length / segmentToPlay.retrigger;
 
       for (let i = 0; i < segmentToPlay.retrigger; i++) {
@@ -156,12 +150,7 @@ export default {
         );
       }
     },
-    start: function() {
-      this.transport.start();
-    },
-    stop: function() {
-      this.transport.stop();
-    },
+   
     getRandomSegmentByGroup: function(group) {
       let segments = this.currentSegments.filter(s => s.group == group);
       const newLocal = ~~(Math.random() * segments.length);
@@ -174,10 +163,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/theme.scss";
-.transport{
-      margin: $margin-l;
-  border: 1px solid $accent;
-}
+
 .waveform-editor {
   margin: $margin-l;
   border: 1px solid $accent;

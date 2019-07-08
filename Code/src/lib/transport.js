@@ -1,7 +1,8 @@
 import Tone from 'tone';
-import { EventEmitter } from 'events';
 
-export class Transport {
+
+
+class Transport {
 
     pulse = (p) => { };
 
@@ -44,4 +45,4 @@ export class Transport {
     sixteenth() { return beat / 16.0; }
 }
 
-//export const transport = new Transport();
+export const transport = new Transport();
