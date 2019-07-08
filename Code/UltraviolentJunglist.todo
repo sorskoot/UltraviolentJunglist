@@ -32,8 +32,8 @@ Todo:
         Current Track Item Pointer
 
     Transport control:
-         ✔ @today Start/Stop playing song/pattern @done(19-07-08 22:22)
-         ☐ @today Set the tempo 
+         ✔ Start/Stop playing song/pattern @done(19-07-08 22:22)
+         ✔ Set the tempo @done(19-07-08 22:33)
          ☐ Set the measure (4/4, 7/8, 13/16)
 
     Song Editor:

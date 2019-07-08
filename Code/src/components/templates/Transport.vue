@@ -24,12 +24,12 @@ export default {
   },
   data:function(){
       return {
-          internalBpm:this.BPM
+          internalBpm:this.bpm
       }
   },
   watch: {
     bpm: function(val) {
-      
+        this.internalBpm=val;
     }
   },
   methods: {

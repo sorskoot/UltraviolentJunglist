@@ -153,7 +153,6 @@ export default {
     getRandomSegmentByGroup: function(group) {
       let segments = this.currentSegments.filter(s => s.group == group);
       const newLocal = ~~(Math.random() * segments.length);
-      console.log(newLocal);
       return segments[newLocal];
     }
   }
