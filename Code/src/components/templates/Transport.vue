@@ -1,18 +1,20 @@
 <template>
   <div class="transport">
-    <uj-button :disabled="disabled" v-on:click="start()">Start</uj-button>
-    <uj-button :disabled="disabled" v-on:click="stop()">Stop</uj-button>
+      <uj-transport-buttons :disabled="disabled" 
+        v-on:play="play" 
+        v-on:stop="stop" ></uj-transport-buttons>
     <input v-model="internalBpm" />
   </div>
 </template>
 
 <script>
-import { ujButton } from "@/components/atoms";
+
+import { ujTransportButtons } from "@/components/organisms";
 import { transport } from "@/lib";
 
 export default {
   name: "uj-transport",
-  components: { ujButton },
+  components: { ujTransportButtons },
   props: {
     disabled: Boolean,
     bpm: {
@@ -31,9 +33,9 @@ export default {
     }
   },
   methods: {
-    start: function() {
+    play: function() {
         transport.bpm = this.internalBpm;
-      transport.start();
+        transport.start();
     },
     stop: function() {
       transport.stop();

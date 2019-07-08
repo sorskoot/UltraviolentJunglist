@@ -1,3 +1,4 @@
 import ujTrackBarEditor from './TrackBarEditor';
+import ujTransportButtons from './TransportButtons';
 
-export {ujTrackBarEditor};
+export { ujTrackBarEditor, ujTransportButtons };

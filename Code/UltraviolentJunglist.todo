@@ -8,7 +8,7 @@ Todo:
         ☐ Add a `for` to the SCSS for the trackbar buttons
 
     Overall:
-        ☐ Create saparation between UI and Logic @today
+        ☐ @today Create saparation between UI and Logic 
         ☐ Export a song to a Wav or MP3
         ☐ Random can be totally random or with a specific seed
         ☐ MIDI support
@@ -19,6 +19,9 @@ Todo:
         ☐ Come up with an object model
         ☐ Save songs
         ☐ Load songs
+        ☐ @critical Change the way the AudioSouceBuffers are played. A new one is created every time
+        ☐ Fix Storybook
+        ☐ Add missing stories
 
     - ideas:
         Song
@@ -29,8 +32,8 @@ Todo:
         Current Track Item Pointer
 
     Transport control:
-         ☐ Start/Stop plying song/pattern @today
-         ☐ Set the tempo @today
+         ✔ @today Start/Stop playing song/pattern @done(19-07-08 22:22)
+         ☐ @today Set the tempo 
          ☐ Set the measure (4/4, 7/8, 13/16)
 
     Song Editor:
@@ -63,9 +66,10 @@ Todo:
                      ☐ change 'color' by dragging up or down
 
         Sample Editor:
-            ☐ play entire sample @today
-            ☐ Sample can be devided into X number of segments by default @today
-            ☐ The length of a segment can be changed. @today 
+            ☐ @today play entire sample
+            ☐ @today Sample can be devided into X number of segments by default
+                This number could be guessed by assuming it is 4, 8, 16 or 32
+            ☐ The length of a segment can be changed.
             ☐ One hit samples
             ☐ calculate properties of the samples/segments like 'energy'
             ☐ Load samples from disk
@@ -89,6 +93,7 @@ Todo:
                     ☐ Send an segment changed event when done dragging
 
             FX Editor:
+                ☐ @high Retrigger should reset when segment changes
                 ☐ All the regular filters: 
                     ☐ lowpass
                     ☐ highpass
@@ -118,6 +123,6 @@ Archive:
   ✔ Show a wavefrom on the editor @done(19-06-17 20:52) @project(Todo.Song Editor.Sample Editor.Waveform Editor)
   ✔ Play current segment @done(19-06-17 23:51) @project(Todo.Song Editor.Sample Editor.Waveform Editor)
   ✔ Drag the segment to change the start @done(19-06-17 23:19) @project(Todo.Song Editor.Sample Editor.Waveform Editor)
-  ✔ Retrigger @done(19-07-08 16:36) @project(Todo.Song Editor.Sample Editor.FX Editor)
+  ✔ FX Retrigger @done(19-07-08 16:36) @project(Todo.Song Editor.Sample Editor.FX Editor)
    ✔ Load a sample @done(19-06-13 23:23)
    ✔ Getting started on a style @done(19-06-14 00:20)
