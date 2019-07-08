@@ -1,13 +1,14 @@
 # Codename: Ultraviolent Junglist 
 # Purpose: DAW
 
-Generate music with semi-random controls
+Generate music with semi-random controls using the Web Audio API
 
 Todo:
     Style:
         ☐ Add a `for` to the SCSS for the trackbar buttons
 
     Overall:
+        ☐ Create saparation between UI and Logic @today
         ☐ Export a song to a Wav or MP3
         ☐ Random can be totally random or with a specific seed
         ☐ MIDI support
@@ -16,7 +17,9 @@ Todo:
         ☐ Needs a real name
         ☐ needs a logo
         ☐ Come up with an object model
-    Model:
+        ☐ Save songs
+        ☐ Load songs
+
     - ideas:
         Song
             Pattern []
@@ -25,12 +28,10 @@ Todo:
         Current Pattern
         Current Track Item Pointer
 
-
     Transport control:
-         ☐ Start/Stop plying song/pattern
-         ☐ Set the temp
+         ☐ Start/Stop plying song/pattern @today
+         ☐ Set the tempo @today
          ☐ Set the measure (4/4, 7/8, 13/16)
-
 
     Song Editor:
          ☐ Contains information about an entire song. Like the name.
@@ -56,21 +57,20 @@ Todo:
 
             ☐ Edit a track
             Track Bar:
-                ✔ Create the trackbar @done(19-06-20 23:37)
 
                 Track Bar Button:
-                    ✔ Create the trackbarButtons @done(19-06-20 23:37)
                      ☐ we need a name for this. ==> items
-                     ✔ Change 'color' by clicking @done(19-06-27 22:41)
                      ☐ change 'color' by dragging up or down
 
         Sample Editor:
-            ☐ Sample can be devided into X number of segments by default
-            ☐ The length of a segment can be changed.
+            ☐ play entire sample @today
+            ☐ Sample can be devided into X number of segments by default @today
+            ☐ The length of a segment can be changed. @today 
             ☐ One hit samples
             ☐ calculate properties of the samples/segments like 'energy'
-            ☐ Load different samples
-            Segment Editor:
+            ☐ Load samples from disk
+            ☐ Load samples from samplepack
+
             ~ Segments can be multiple segments long
                 Waveform Editor:
                     ~ Segments can overlap
@@ -78,15 +78,14 @@ Todo:
                     ~ a canvas that shows the waveform of the selected sample
                     ☐ select segments in on the waveform.
                     ☐ drag the end of the segment to make it longer or shorter.
-                    ☐ We need a way to select the different segments
+                    ☐ Shortcut to improve selecting segments is to color the items in the dropdown 
+                    ☐ We need a better way to select the different segments
+                        Maybe lines below the waveform that mark the length of a colored segment
                     ☐ Highlight the segments that have the same color.
-                    ✔ Show a wavefrom on the editor @done(19-06-17 20:52)
                     ☐ Show the division
-                    ✔ Play current segment @done(19-06-17 23:51)
                     ☐ Play current segment with short-key
                     ☐ Config the color of the segments
                     ☐ Drag the right of the segment to change length
-                    ✔ Drag the segment to change the start @done(19-06-17 23:19)
                     ☐ Send an segment changed event when done dragging
 
             FX Editor:
@@ -105,15 +104,20 @@ Todo:
                 ☐ Distortion
                 ☐ Reverb
                 ☐ Delay
-                ☐ Retrigger @today
 
     Audio:
         ☐ Create a 'service' for the audio
 
     MIDI Support:
-        ~ we should have a custom directive or something we can add to controlls 
-            to trigger them with MIDI
+        ☐ we should have a custom directive or something we can add to controlls to trigger them with MIDI
 
 Archive:
-    ✔ Load a sample @done(19-06-13 23:23)
-    ✔ Getting started on a style @done(19-06-14 00:20)
+  ✔ Create the trackbar @done(19-06-20 23:37) @project(Todo.Song Editor.Track Editor.Track Bar)
+  ✔ Create the trackbarButtons @done(19-06-20 23:37) @project(Todo.Song Editor.Track Editor.Track Bar.Track Bar Button)
+  ✔ Change 'color' by clicking @done(19-06-27 22:41) @project(Todo.Song Editor.Track Editor.Track Bar.Track Bar Button)
+  ✔ Show a wavefrom on the editor @done(19-06-17 20:52) @project(Todo.Song Editor.Sample Editor.Waveform Editor)
+  ✔ Play current segment @done(19-06-17 23:51) @project(Todo.Song Editor.Sample Editor.Waveform Editor)
+  ✔ Drag the segment to change the start @done(19-06-17 23:19) @project(Todo.Song Editor.Sample Editor.Waveform Editor)
+  ✔ Retrigger @done(19-07-08 16:36) @project(Todo.Song Editor.Sample Editor.FX Editor)
+   ✔ Load a sample @done(19-06-13 23:23)
+   ✔ Getting started on a style @done(19-06-14 00:20)
