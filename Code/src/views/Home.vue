@@ -45,15 +45,10 @@
 
 <script>
 // @ is an alias to /src
-import {ujTrackEditor} from '../components/templates/index.js';
+import {ujTrackEditor} from '../components/templates';
 
-import ujButton from "../components/atoms/Button";
-import ujWaveform from "../components/atoms/Waveform";
-import ujDropdown from "../components/atoms/Dropdown";
-import ujInput from "../components/atoms/Input";
-import ujTrackBar from "../components/molecules/TrackBar";
-import ujGroupSelector from "../components/molecules/GroupSelector";
-import ujPropertySlider from "../components/molecules/PropertySlider";
+import {ujButton,ujWaveform,ujDropdown,ujInput} from "../components/atoms";
+import {ujTrackBar,ujGroupSelector,ujPropertySlider} from "../components/molecules";
 import { Transport, sampleLoader } from "../lib";
 import { Segment } from "../lib/models";
 import Tone from "tone";

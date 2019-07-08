@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { ujTrackBarEditor } from "../organisms/index.js";
+import { ujTrackBarEditor } from "../organisms";
 
 export default {
   name: "uj-track-editor",

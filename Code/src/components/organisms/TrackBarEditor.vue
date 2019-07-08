@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import {ujTrackBar} from "../molecules/index.js";
+import {ujTrackBar} from "../molecules";
 
 export default {
   name: "uj-track-bar-editor",

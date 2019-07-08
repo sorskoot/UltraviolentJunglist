@@ -12,7 +12,7 @@
 
 <script>
 
-import {ujTrackButton} from "../atoms/index.js";
+import {ujTrackButton} from "../atoms";
 
 export default {
   components: { ujTrackButton },
