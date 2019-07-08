@@ -33,7 +33,7 @@ Todo:
 
     Transport control:
          ✔ Start/Stop playing song/pattern @done(19-07-08 22:22)
-         ☐ @today Combine Start/Stop into 1 button
+         ✔ Combine Start/Stop into 1 button @done(19-07-09 00:22)
          ✔ Set the tempo @done(19-07-08 22:33)
          ☐ Set the measure (4/4, 7/8, 13/16)
 
@@ -67,8 +67,8 @@ Todo:
                      ☐ change 'color' by dragging up or down
 
         Sample Editor:
-            ☐ @today play entire sample
-            ✔ @today Sample can be devided into X number of segments by default @done(19-07-08 23:59)
+            ✔ play entire sample @done(19-07-09 00:13)
+            ✔ Sample can be devided into X number of segments by default @done(19-07-08 23:59)
                 This number could be guessed by assuming it is 4, 8, 16 or 32
             ☐ The length of a segment can be changed.
             ☐ One hit samples

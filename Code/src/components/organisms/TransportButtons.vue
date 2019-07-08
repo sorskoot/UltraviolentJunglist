@@ -1,7 +1,7 @@
 <template>
   <div>
-    <uj-play-button :disabled="disabled" v-on:play="playClicked"></uj-play-button>
-    <uj-stop-button :disabled="disabled" v-on:stop="stopClicked"></uj-stop-button>
+    <uj-play-button v-if="!isPlaying" :disabled="disabled" v-on:play="playClicked"></uj-play-button>
+    <uj-stop-button v-if="isPlaying" :disabled="disabled" v-on:stop="stopClicked"></uj-stop-button>
   </div>
 </template>
 
@@ -14,11 +14,18 @@ export default {
   props: {
     disabled: { type: Boolean, default: true }
   },
+  data:function(){
+      return{
+          isPlaying:false
+      }
+  },
   methods: {
     playClicked: function() {
+        this.isPlaying = true;
         this.$emit('play');
     },
     stopClicked: function() {
+        this.isPlaying = false;
         this.$emit('stop');
     }
   }

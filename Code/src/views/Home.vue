@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <ujTransport :disabled="!sampleLoaded"></ujTransport>
+    <uj-transport :disabled="!sampleLoaded"></uj-transport>
     <uj-track-editor :current="current" :track="track"></uj-track-editor>
 
     <div class="waveform-editor">
@@ -13,6 +13,7 @@
           :buffer="buffer"
         ></uj-waveform>
         <uj-button :disabled="!sampleLoaded" v-on:click="trigger()">Trigger</uj-button>
+        <uj-play-button :disabled="!sampleLoaded" v-on:play="playSample"></uj-play-button>
       </div>
       <div class="waveform-properties">
         <div>
@@ -45,11 +46,7 @@
 // @ is an alias to /src
 import { ujTrackEditor, ujTransport } from "@/components/templates";
 import { ujButton, ujWaveform, ujDropdown, ujInput } from "@/components/atoms";
-import {
-  ujTrackBar,
-  ujGroupSelector,
-  ujPropertySlider
-} from "@/components/molecules";
+import { ujTrackBar, ujGroupSelector, ujPropertySlider, ujPlayButton} from "@/components/molecules";
 import { transport, sampleLoader } from "@/lib";
 import { Segment } from "@/lib/models";
 import Tone from "tone";
@@ -65,7 +62,8 @@ export default {
     ujGroupSelector,
     ujPropertySlider,
     ujTrackEditor,
-    ujTransport
+    ujTransport,
+    ujPlayButton
   },
   data: function() {
     return {
@@ -116,6 +114,9 @@ export default {
     },
     sampleSelected: function(sample) {
       this.load(sample);
+    },
+    playSample:function(){
+        this.player.start();
     },
     segmentSelected: function(seg) {
       this.currentSegmentIndex = seg;
