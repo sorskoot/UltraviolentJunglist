@@ -32,9 +32,6 @@ export default {
       default: () => new Float32Array()
     }
   },
-  data: {
-      
-  },
   methods: {
     mousemoveOverlay: function(evt) {
       if (evt.buttons === 0) {

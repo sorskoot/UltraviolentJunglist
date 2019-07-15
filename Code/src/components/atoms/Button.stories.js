@@ -5,7 +5,7 @@ import { withInfo } from 'storybook-addon-vue-info';
 import ujButton from './Button';
 
 storiesOf('2.Atoms|uj-button', module)
-    .addDecorator(withInfo)
+   // .addDecorator(withInfo)
     .add('outline', () => ({
         components: { ujButton },
         render(h) { return <uj-button >Outline Button</uj-button> },

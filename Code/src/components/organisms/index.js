@@ -1,4 +1,5 @@
 import ujTrackBarEditor from './TrackBarEditor';
 import ujTransportButtons from './TransportButtons';
+import ujFilterEditor from './FilterEditor';
 
-export { ujTrackBarEditor, ujTransportButtons };
+export { ujTrackBarEditor, ujTransportButtons, ujFilterEditor };

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <select v-model="selected">
+    <select v-model="selectedInternal">
       <option v-for="(item, index) in items" :key="index" :value="index">{{item}}</option>
     </select>
   </div>
@@ -10,15 +10,16 @@
 export default {
   name: "uj-dropdown",
   props: {
-    items: Array
+    items: Array,
+    selected: [String, Number]
   },
   data: function() {
     return {
-      selected: ''
+      selectedInternal: this.selected
     };
   },
   watch: {
-    selected: function(val) {
+    selectedInternal: function(val) {
       this.$emit('select',val);
     }
   }

@@ -95,18 +95,18 @@ Todo:
 
             FX Editor:
                 ☐ @high Retrigger should reset when segment changes
-                ☐ All the regular filters: 
+                ☐ @started All the regular filters: 
                     ☐ lowpass
                     ☐ highpass
                     ☐ bandpass
-                    ☐ lowshelf
+                    ☐ lowshelf 
                     ☐ highshelf
                     ☐ peaking
                     ☐ notch
                     ☐ allpas
                 ☐ Sweepable. Start to finish
                 ☐ Glitch effect
-                ☐ Bitcrusher
+                ✘ Bitcrusher @cancelled(19-07-11 23:14) Sounds too bad.
                 ☐ Distortion
                 ☐ Reverb
                 ☐ Delay

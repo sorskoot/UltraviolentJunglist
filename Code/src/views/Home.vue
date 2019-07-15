@@ -37,16 +37,21 @@
             :max="16"
           ></uj-property-slider>
         </div>
+        <div>
+            <uj-filter-editor></uj-filter-editor>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+
 import { ujTrackEditor, ujTransport } from "@/components/templates";
 import { ujButton, ujWaveform, ujDropdown, ujInput } from "@/components/atoms";
 import { ujTrackBar, ujGroupSelector, ujPropertySlider, ujPlayButton} from "@/components/molecules";
+import { ujFilterEditor } from '@/components/organisms';
+
 import { transport, sampleLoader } from "@/lib";
 import { Segment } from "@/lib/models";
 import Tone from "tone";
@@ -63,7 +68,8 @@ export default {
     ujPropertySlider,
     ujTrackEditor,
     ujTransport,
-    ujPlayButton
+    ujPlayButton,
+    ujFilterEditor
   },
   data: function() {
     return {
@@ -151,9 +157,16 @@ export default {
 
       for (let i = 0; i < segmentToPlay.retrigger; i++) {
         let source = Tone.context.createBufferSource();
-
-        source.connect(Tone.context.destination);
+        let freq = 2000;
+        let type = "highpass";
+        let Q   = 0.5;
+        let filter = new Tone.Filter(freq,type);
+        filter.Q.value = Q;
+        filter.connect(Tone.context.destination);
+        
+        source.connect(filter);
         source.buffer = buffer;
+
         let d = i * duration;
         let n = Tone.context.currentTime + d;
         source.start(
