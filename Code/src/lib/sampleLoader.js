@@ -39,7 +39,7 @@ export const sampleLoader = {
     availableSamples: availableSamples,
     load: function (index) {
         let s = new Sample("Ruffa");
-        return s.load(availableSamples[index]).then((sample => {
+        return s.load(index).then((sample => {
             // let player = new Tone.Player();
             // player._buffer = sample._buffer;
             return sample.buffer;

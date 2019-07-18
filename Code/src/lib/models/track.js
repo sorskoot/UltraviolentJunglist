@@ -35,7 +35,7 @@ export class Track {
             return segment;
         })
     }
-    
+
     async loadSample(sampleIndex){
         let sample = await sampleLoader.load(sampleIndex);
         this.buffer = sample._buffer;

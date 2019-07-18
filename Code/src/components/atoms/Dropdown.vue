@@ -1,7 +1,7 @@
 <template>
   <div>
     <select v-model="selectedInternal">
-      <option v-for="(item, index) in items" :key="index" :value="index">{{item}}</option>
+      <option v-for="(item, index) in items" :key="index" :value="item">{{item}}</option>
     </select>
   </div>
 </template>

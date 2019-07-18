@@ -36,8 +36,8 @@
             :max="16"
           ></uj-property-slider>
         </div>
-        <div>
-          <uj-filter-editor></uj-filter-editor>
+        <div v-if="!!currentSegment">
+          <uj-filter-editor :filter="currentSegment.filter" @change="onFilterChange"></uj-filter-editor>
         </div>
       </div>
     </div>
@@ -56,7 +56,7 @@ import {
 import { ujFilterEditor } from "@/components/organisms";
 
 import { transport, sampleLoader } from "@/lib";
-import { Track } from "@/lib/models";
+import { Track,Filter } from "@/lib/models";
 import Tone from "tone";
 
 export default {
@@ -74,6 +74,7 @@ export default {
     ujPlayButton,
     ujFilterEditor
   },
+
   data: function() {
     return {
       currentSegmentIndex: 0,
@@ -131,6 +132,11 @@ export default {
     pulse:function(p) {
       this.current = p;
       this.track.triggerGroup(p);
+    },
+    onFilterChange(freq, Q, type){
+        this.currentSegment.filter.freq = freq;
+        this.currentSegment.filter.Q = Q;
+        this.currentSegment.filter.type = type;
     }
   }
 };
