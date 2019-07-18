@@ -2,7 +2,7 @@ import Tone from 'tone';
 
 export class Sample {
 
-    _buffer;
+    buffer;
     _isLoaded = false;
 
     get isLoaded() {
@@ -17,7 +17,7 @@ export class Sample {
         return new Promise((res, rej) => {
             try {
                 let buffer = new Tone.Buffer(filename, () => {
-                    this._buffer = buffer;
+                    this.buffer = buffer;
                     res(this);
                 })
             } catch (e) {

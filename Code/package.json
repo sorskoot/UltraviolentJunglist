@@ -44,7 +44,8 @@
         "storybook-addon-vue-info": "^1.2.1",
         "storybook-vue-router": "1.0.3",
         "vue-cli-plugin-atomic-design": "^0.3.2",
-        "vue-template-compiler": "^2.6.10"
+        "vue-template-compiler": "^2.6.10",
+        "@types/webaudioapi": "0.0.27"
     },
     "eslintConfig": {
         "root": true,

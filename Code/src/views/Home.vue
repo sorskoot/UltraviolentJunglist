@@ -1,8 +1,7 @@
 <template>
   <div class="home">
-    <uj-transport :disabled="!sampleLoaded"></uj-transport>
+    <uj-transport @pulse="pulse"></uj-transport>
     <uj-track-editor :current="current" :track="track"></uj-track-editor>
-
     <div class="waveform-editor">
       <div>
         <uj-waveform
@@ -10,14 +9,14 @@
           width="1200"
           height="300"
           :current-segment="this.currentSegment"
-          :buffer="buffer"
+          :buffer="track.buffer"
         ></uj-waveform>
         <uj-button :disabled="!sampleLoaded" v-on:click="trigger()">Trigger</uj-button>
         <uj-play-button :disabled="!sampleLoaded" v-on:play="playSample"></uj-play-button>
       </div>
       <div class="waveform-properties">
         <div>
-          <uj-dropdown :selected="currentSegmentIndex" :items="segments" @select="segmentSelected"></uj-dropdown>
+          <uj-dropdown :selected="currentSegmentIndex" :items="track.segments.map(s=>s.key)" @select="segmentSelected"></uj-dropdown>
         </div>
         <div>
           <uj-group-selector
@@ -38,7 +37,7 @@
           ></uj-property-slider>
         </div>
         <div>
-            <uj-filter-editor></uj-filter-editor>
+          <uj-filter-editor></uj-filter-editor>
         </div>
       </div>
     </div>
@@ -46,14 +45,18 @@
 </template>
 
 <script>
-
 import { ujTrackEditor, ujTransport } from "@/components/templates";
 import { ujButton, ujWaveform, ujDropdown, ujInput } from "@/components/atoms";
-import { ujTrackBar, ujGroupSelector, ujPropertySlider, ujPlayButton} from "@/components/molecules";
-import { ujFilterEditor } from '@/components/organisms';
+import {
+  ujTrackBar,
+  ujGroupSelector,
+  ujPropertySlider,
+  ujPlayButton
+} from "@/components/molecules";
+import { ujFilterEditor } from "@/components/organisms";
 
 import { transport, sampleLoader } from "@/lib";
-import { Segment } from "@/lib/models";
+import { Track } from "@/lib/models";
 import Tone from "tone";
 
 export default {
@@ -76,43 +79,34 @@ export default {
       currentSegmentIndex: 0,
       currentSegments: [],
       sampleLoaded: false,
-      player: undefined,
-      track: {
-        items: [new Array(16).fill(0)]
-      },
-      segments: [...Array(16).keys()],
+      track: new Track(),
       current: 0,
-      buffer: new Float32Array(),
       samples: sampleLoader.availableSamples,
       selectedSample: ""
     };
   },
+  
   watch: {
     selectedSample: function(val) {}
   },
+
   computed: {
     currentSegmentGroup: function() {
       if (this.currentSegmentIndex < this.currentSegments.length) {
-        return this.currentSegments[this.currentSegmentIndex].group;
+        return this.track.segments[this.currentSegmentIndex].group;
       }
     },
 
     currentSegment: function() {
-      return this.currentSegments[this.currentSegmentIndex];
+      if (!this.track.segments || !this.track.segments.length) {
+        return;
+      }
+      return this.track.segments[this.currentSegmentIndex];
     }
   },
+
   beforeCreate: function() {
-    transport.pulse = function(p) {
-      this.current = p;
-      if (~this.track.items[0][p]) {
-        let segmentToPlay = this.getRandomSegmentByGroup(
-          this.track.items[0][p]
-        );
-        if (segmentToPlay) {
-          this.trigger(segmentToPlay);
-        }
-      }
-    }.bind(this);
+    
   },
   methods: {
     groupChanged: function(newGroup) {
@@ -121,67 +115,22 @@ export default {
     sampleSelected: function(sample) {
       this.load(sample);
     },
-    playSample:function(){
-        this.player.start();
+    playSample: function() {
+      this.player.start();
     },
     segmentSelected: function(seg) {
       this.currentSegmentIndex = seg;
     },
     load: async function(sample) {
-      this.player = await sampleLoader.load(sample);
-      const dur=(transport.bpm/60) * this.player._buffer.duration;
-      let durationOptions = [
-            {key:4, value:Math.abs(4-dur)},
-            {key:8, value:Math.abs(8-dur)},
-            {key:16, value:Math.abs(16-dur)},
-            {key:32, value:Math.abs(32-dur)}
-      ]
-      let numberOfSegments = durationOptions.sort((a,b)=>a.value-b.value)[0].key;
-      this.currentSegments = [...Array(numberOfSegments).keys()].map((key, i) => {
-        let segment = new Segment();
-        segment.bufferStart = i * (1 / numberOfSegments);
-        segment.bufferLength = 1 / numberOfSegments;
-        return segment;
-      });
-      const buffer = this.player._buffer.get();
-      this.currentSegments[0].duration = buffer.duration;
-      this.buffer = buffer.getChannelData(0);
-      this.sampleLoaded = true;
+      this.track = new Track();
+      this.sampleLoaded = await this.track.loadSample(sample);
     },
-    trigger: function(
-      segmentToPlay = this.currentSegments[this.currentSegmentIndex]
-    ) {
-      let buffer = this.player._buffer.get();
-      let length = transport.beat();
-      const duration = length / segmentToPlay.retrigger;
-
-      for (let i = 0; i < segmentToPlay.retrigger; i++) {
-        let source = Tone.context.createBufferSource();
-        let freq = 2000;
-        let type = "highpass";
-        let Q   = 0.5;
-        let filter = new Tone.Filter(freq,type);
-        filter.Q.value = Q;
-        filter.connect(Tone.context.destination);
-        
-        source.connect(filter);
-        source.buffer = buffer;
-
-        let d = i * duration;
-        let n = Tone.context.currentTime + d;
-        source.start(
-          n,
-          this.currentSegments[0].duration * segmentToPlay.bufferStart,
-          this.currentSegments[0].duration *
-            (segmentToPlay.bufferLength / segmentToPlay.retrigger)
-        );
-      }
+    trigger: function() {
+      this.track.trigger(this.currentSegmentIndex);
     },
-
-    getRandomSegmentByGroup: function(group) {
-      let segments = this.currentSegments.filter(s => s.group == group);
-      const newLocal = ~~(Math.random() * segments.length);
-      return segments[newLocal];
+    pulse:function(p) {
+      this.current = p;
+      this.track.triggerGroup(p);
     }
   }
 };

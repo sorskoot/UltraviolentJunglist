@@ -40,9 +40,9 @@ export const sampleLoader = {
     load: function (index) {
         let s = new Sample("Ruffa");
         return s.load(availableSamples[index]).then((sample => {
-            let player = new Tone.Player().toMaster();
-            player._buffer = sample._buffer;
-            return player;
+            // let player = new Tone.Player();
+            // player._buffer = sample._buffer;
+            return sample.buffer;
         }))
     }
 }

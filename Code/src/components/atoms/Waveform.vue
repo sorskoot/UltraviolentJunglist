@@ -1,16 +1,16 @@
 <template>
-<div class="waveformTemplate" >
-  <div class="waveformContainer">
-    <canvas class="waveform" :width="this.width" :height="this.height"></canvas>
-    <canvas
-      v-on:mousemove="mousemoveOverlay"
-      v-on:mousedown="mousedownOverlay"
-      v-on:mouseup="mouseupOverlay"
-      class="waveformOverlay"
-      :width="this.width"
-      :height="this.height"
-    ></canvas>
-  </div>
+  <div class="waveformTemplate">
+    <div class="waveformContainer">
+      <canvas class="waveform" :width="this.width" :height="this.height"></canvas>
+      <canvas
+        v-on:mousemove="mousemoveOverlay"
+        v-on:mousedown="mousedownOverlay"
+        v-on:mouseup="mouseupOverlay"
+        class="waveformOverlay"
+        :width="this.width"
+        :height="this.height"
+      ></canvas>
+    </div>
   </div>
 </template>
 
@@ -28,9 +28,14 @@ export default {
       default: () => new Segment()
     },
     buffer: {
-      type: Float32Array,
-      default: () => new Float32Array()
+      type: AudioBuffer,
+      //default: () => new AudioBuffer(0)
     }
+  },
+  data:function(){
+      return {
+        internalBuffer: !!this.buffer?this.buffer.getChannelData(0):new Float32Array()
+      }
   },
   methods: {
     mousemoveOverlay: function(evt) {
@@ -102,7 +107,7 @@ export default {
   },
   watch: {
     currentSegment: function(val) {
-      renderWaveform(this.ctx, this.width, this.height, this.buffer);
+      renderWaveform(this.ctx, this.width, this.height, this.internalBuffer);
       drawOverlay(
         this.ctxOverlay,
         this.currentSegment.bufferStart,
@@ -112,7 +117,9 @@ export default {
       );
     },
     buffer: function(val) {
-      renderWaveform(this.ctx, this.width, this.height, this.buffer);
+        if(!val)return;
+      this.internalBuffer = val.getChannelData(0);
+      renderWaveform(this.ctx, this.width, this.height, this.internalBuffer);
       drawOverlay(
         this.ctxOverlay,
         this.currentSegment.bufferStart,
@@ -155,27 +162,27 @@ function renderWaveform(ctx, width, height, data, zoom = 1) {
 </script>
 
 <style scoped lang="scss">
-.waveformTemplate{
-    height:300px;
-    width:1200px;
-    margin:50px;
-    .waveformContainer {
+.waveformTemplate {
+  height: 300px;
+  width: 1200px;
+  margin: 50px;
+  .waveformContainer {
     position: absolute;
-    
+
     .waveform {
-        position: absolute;
-        top: 0;
-        left: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
     .waveformOverlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        &.hover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      &.hover {
         cursor: pointer;
-        }
+      }
     }
-    }
+  }
 }
 </style>

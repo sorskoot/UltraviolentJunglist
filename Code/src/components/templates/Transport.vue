@@ -33,6 +33,11 @@ export default {
         transport.bpm = val;
     }
   },
+  beforeCreate:function(){
+      transport.pulse = function(p) {
+          this.$emit("pulse", p);
+      }.bind(this);
+  },
   methods: {
     play: function() {
       transport.bpm = this.internalBpm;
